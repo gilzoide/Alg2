@@ -1,7 +1,12 @@
+# backups de texto
 *~
+# objetos
 *.o
-T2\ -\ especificação.pdf
+# executável
+main
+# pdfs quaisquer (especificação do trabai, por exemplo)
+*.pdf
 
-# coisas inuteis do mac
+# coisas inúteis do mac do precoce =P
 T2.1
 .DS_STORE
