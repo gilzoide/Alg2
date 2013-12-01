@@ -1,18 +1,36 @@
-/* 
- * Arvore Binaria de Busca Balanceada: AVL
- * 
- * 
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ *  ALG1 - Trabalho 2
+ *  AVL.h
+ *
+ *  Gil Barbosa Reis                    Nº8532248
+ *  gil.reis@usp.br
+ *
+ *  Leonardo Sampaio Ferraz Ribeiro     Nº8532300
+ *  leonardo.sampaio.ribeiro@usp.br
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+typedef void elem;
+
+/*!
+ *  Registro que define um no/folha/subarvore da AVL
  */
-
-typedef int elem;
-
-typedef struct no {
-	elem info;	// informacao guardada por no
+typedef struct node {
 	
-	char fb;	// fator de balanceamento: altura esquerda - altura direita
-	struct no *esq, *dir;	// encadeamento esquerda e direita
-} No;
+    elem* info;                     /*!< elemento que sera guardado na AVL */
+	char balance_factor;            /*!< fator de balanceamento: altura esquerda - altura direita */
+	struct node *left, *right;      /*!< encadeamento esquerda e direita */
+    
+} node;
 
+/*!
+ *  Registro que define a AVL
+ */
 typedef struct {
-	No *raiz;
+    
+	node *root;                     /*!< raiz da AVL */
+    int (*compare)(elem*, elem*);   /*!< ponteiro para funcao que compara elementos */
+    int size_of_elem;               /*!< tamanho de um elemento */
+    
 } AVL;

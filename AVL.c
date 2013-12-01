@@ -1,121 +1,136 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ *  ALG1 - Trabalho 2
+ *  AVL.c
+ *
+ *  Gil Barbosa Reis                    Nº8532248
+ *  gil.reis@usp.br
+ *
+ *  Leonardo Sampaio Ferraz Ribeiro     Nº8532300
+ *  leonardo.sampaio.ribeiro@usp.br
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
 #include "AVL.h"
 #include <stdlib.h>
 
 
-void AVLCria (AVL *A) {
-	A->raiz = NULL;
+
+void AVL_create (AVL *A) {
+	A->root = NULL;
 }
 
 
-void RotacaoDD (No **p) {
-	No *pai = *p;
-	No *filho = pai->dir;
+void AVL_right_right_rotation (node **p) {
+	node *parent = *p;
+	node *child = parent->right;
 	
-	pai->dir = filho->esq;	// colisao
-	filho->esq = pai;
-	pai->fb = filho->fb = 0;
-	*p = filho;
+	parent->right = child->left;	// colisao
+	child->left = parent;
+	parent->balance_factor = child->balance_factor = 0;
+	*p = child;
 }
 
 
-void RotacaoEE (No **p) {
-	No *pai = *p;
-	No *filho = pai->esq;
+void AVL_left_left_rotation (node **p) {
+	node *parent = *p;
+	node *child = parent->left;
 	
-	pai->esq = filho->dir;	// colisao
-	filho->dir = pai;
-	pai->fb = filho->fb = 0;
-	*p = filho;
+	parent->left = child->right;	// colisao
+	child->right = parent;
+	parent->balance_factor = child->balance_factor = 0;
+	*p = child;
 }
 
 
-void RotacaoED (No **p) {
-	No *pai = *p;
-	No *filho = pai->esq;
-	No *neto = filho->dir;
+void AVL_left_right_rotation (node **p) {
+	node *parent = *p;
+	node *child = parent->left;
+	node *grandchild = child->right;
 	
-	pai->esq = neto->dir;	// colisao
-	filho->dir = neto->esq;
-	neto->dir = pai;
+	parent->left = grandchild->right;	// colisao
+	child->right = grandchild->left;
+	grandchild->right = parent;
 	
-	switch (neto->fb) {
+	switch (grandchild->balance_factor) {
 		case 1:
-			pai->fb = 0;
-			filho->fb = -1;
+			parent->balance_factor = 0;
+			child->balance_factor = -1;
 			break;
 		case 0:
-			pai->fb = 0;
-			filho->fb = 0;
+			parent->balance_factor = 0;
+			child->balance_factor = 0;
 			break;
 		case -1:
-			pai->fb = 1;
-			filho->fb = 0;
+			parent->balance_factor = 1;
+			child->balance_factor = 0;
 			break;
 	}
 	
-	neto->fb = 0;
-	*p = neto;
+	grandchild->balance_factor = 0;
+	*p = grandchild;
 }
 
 
-void RotacaoDE (No **p) {
-	No *pai = *p;
-	No *filho = pai->dir;
-	No *neto = filho->esq;
+void AVL_right_left_rotation (node **p) {
+	node *parent = *p;
+	node *child = parent->right;
+	node *grandchild = child->left;
 	
-	pai->dir = neto->esq;	// colisao
-	filho->esq = neto->dir;
-	neto->dir = pai;
+	parent->right = grandchild->left;	// colisao
+	child->left = grandchild->right;
+	grandchild->right = parent;
 	
-	switch (neto->fb) {
+	switch (grandchild->balance_factor) {
 		case -1:
-			pai->fb = 1;
-			filho->fb = 0;
+			parent->balance_factor = 1;
+			child->balance_factor = 0;
 			break;
 		case 0:
-			pai->fb = 0;
-			filho->fb = 0;
+			parent->balance_factor = 0;
+			child->balance_factor = 0;
 			break;
 		case 1:
-			pai->fb = 0;
-			filho->fb = -1;
+			parent->balance_factor = 0;
+			child->balance_factor = -1;
 			break;
 	}
 	
-	neto->fb = 0;
-	*p = neto;
+	grandchild->balance_factor = 0;
+	*p = grandchild;
 }
 
 
-int aux_insere (No **p, int *x, int *cresceu) {
+int AVL_aux_insert (node **p, int *x, int *grew, int (*compare)(elem*, elem*)) {
 	// lugar certo pra por o novo No
 	if (*p == NULL) {
-		*p = (No*) malloc (sizeof (No));
-		(*p)->info = *x;
-		(*p)->fb = 0;
-		(*p)->esq = (*p)->dir = NULL;
-		*cresceu = 1;
+		*p = (node*) malloc (sizeof (node));
+		(*p)->info = x;
+		(*p)->balance_factor = 0;
+		(*p)->left = (*p)->right = NULL;
+		*grew = 1;
 		return 1;
 	}
 	// x == info
-	else if ((*p)->info == *x)
+	else if ((*compare)((*p)->info, x) == 0)
 		return 0;
 	// x < info
-	else if (*x < (*p)->info) {
-		if (aux_insere (&(*p)->esq, x, cresceu)) {
-			if (*cresceu) {
-				switch ((*p)->fb) {
+	else if ((*compare)((*p)->info, x) < 0) {
+		if (AVL_aux_insert (&(*p)->left, x, grew, compare)) {
+			if (*grew) {
+				switch ((*p)->balance_factor) {
 					case -1:	// ia desbalancear, arruma
-						((*p)->esq->fb == -1) ? RotacaoEE (p) : RotacaoED (p);
-						*cresceu = 0;
+						((*p)->left->balance_factor == -1) ? AVL_left_left_rotation (p) : AVL_left_right_rotation (p);
+						*grew = 0;
 						break;
 					case 0:
-						(*p)->fb = -1;
-						*cresceu = 1;
+						(*p)->balance_factor = -1;
+						*grew = 1;
 						break;
 					case 1:
-						(*p)->fb = 0;
-						*cresceu = 0;
+						(*p)->balance_factor = 0;
+						*grew = 0;
 						break;
 				}
 			}
@@ -125,20 +140,20 @@ int aux_insere (No **p, int *x, int *cresceu) {
 			return 0;
 	}
 	else {	// x > info
-		if (aux_insere (&(*p)->dir, x, cresceu)) {
-			if (*cresceu) {
-				switch ((*p)->fb) {
+		if (AVL_aux_insert (&(*p)->right, x, grew, compare)) {
+			if (*grew) {
+				switch ((*p)->balance_factor) {
 					case -1:
-						(*p)->fb = 0;
-						*cresceu = 0;
+						(*p)->balance_factor = 0;
+						*grew = 0;
 						break;
 					case 0:
-						(*p)->fb = -1;
-						*cresceu = 1;
+						(*p)->balance_factor = -1;
+						*grew = 1;
 						break;
 					case 1:		// ia desbalancear, arruma
-						((*p)->dir->fb == 1) ? RotacaoDD (p) : RotacaoDE (p);
-						*cresceu = 0;
+						((*p)->right->balance_factor == 1) ? AVL_right_right_rotation (p) : AVL_right_left_rotation (p);
+						*grew = 0;
 						break;
 				}
 			}
@@ -150,7 +165,7 @@ int aux_insere (No **p, int *x, int *cresceu) {
 }
 
 
-int AVLInsere (AVL *A, int *x) {
+int AVL_insert (AVL *A, int *x) {
 	int cresceu;
-	return aux_insere (&A->raiz, x, &cresceu);
+	return AVL_aux_insert (&A->root, x, &cresceu, A->compare);
 }

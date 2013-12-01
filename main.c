@@ -1,16 +1,21 @@
-//
-//  main.c
-//  T2
-//
-//  Created by Léo Sampaio on 25/11/13.
-//  Copyright (c) 2013 Léo Sampaio. All rights reserved.
-//
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ *  ALG1 - Trabalho 2
+ *  main.c
+ *
+ *  Gil Barbosa Reis                    Nº8532248
+ *  gil.reis@usp.br
+ *
+ *  Leonardo Sampaio Ferraz Ribeiro     Nº8532300
+ *  leonardo.sampaio.ribeiro@usp.br
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <stdio.h>
 
 int main(int argc, const char * argv[])
 {
-    // Hello test
+
     // insert code here...
     printf("Hello, World!\n");
     return 0;
