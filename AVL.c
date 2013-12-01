@@ -115,31 +115,45 @@ void AVL_right_left_rotation (node **p) {
 
 int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) {
     
-	// lugar certo pra por o novo No
+	// lugar correto da insersao encontrado
 	if (*p == NULL) {
+        
+        // aloca memoria
 		*p = (node*) malloc (sizeof (node));
+        if (p == NULL) return 0;
+        
+        // insere na arvore
 		(*p)->info = x;
 		(*p)->balance_factor = 0;
 		(*p)->left = (*p)->right = NULL;
+        
+        // indica que a subarvore cresceu
 		*grew = 1;
+        
 		return 1;
 	}
-	// x == info
-	else if ((*compare)((*p)->info, x) == 0)
+	// x == info // erro na insercao
+	else if ((*compare)(x, (*p)->info) == 0)
 		return 0;
 	// x < info
-	else if ((*compare)((*p)->info, x) < 0) {
+	else if ((*compare)(x, (*p)->info) < 0) {
+        // tenta inserir na subarvore esquerda
 		if (AVL_aux_insert (&(*p)->left, x, grew, compare)) {
+            
+            // se a subarvore creaceu
 			if (*grew) {
 				switch ((*p)->balance_factor) {
-					case -1:	// ia desbalancear, arruma
+					// haveria desbalanceamento
+                    case -1:
 						((*p)->left->balance_factor == -1) ? AVL_left_left_rotation (p) : AVL_left_right_rotation (p);
 						*grew = 0;
 						break;
+                    // estava perfeitamente balanceada
 					case 0:
 						(*p)->balance_factor = -1;
 						*grew = 1;
 						break;
+                    // estava "pesada" na direita
 					case 1:
 						(*p)->balance_factor = 0;
 						*grew = 0;
@@ -148,22 +162,28 @@ int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) 
 			}
 			return 1;
 		}
+        // se ocorreu erro na insercao
 		else
 			return 0;
 	}
 	else {	// x > info
-		if (AVL_aux_insert (&(*p)->right, x, grew, compare)) {
-			if (*grew) {
+		// tenta inserir na subarvore direita
+        if (AVL_aux_insert (&(*p)->right, x, grew, compare)) {
+			// se a subarvore cresceu
+            if (*grew) {
 				switch ((*p)->balance_factor) {
-					case -1:
+					// estava "pesada" na direita
+                    case -1:
 						(*p)->balance_factor = 0;
 						*grew = 0;
 						break;
-					case 0:
+					// estava perfeitamente balanceada
+                    case 0:
 						(*p)->balance_factor = -1;
 						*grew = 1;
 						break;
-					case 1:		// ia desbalancear, arruma
+					// haveria desbalanceamento
+                    case 1:
 						((*p)->right->balance_factor == 1) ? AVL_right_right_rotation (p) : AVL_right_left_rotation (p);
 						*grew = 0;
 						break;
@@ -171,6 +191,7 @@ int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) 
 			}
 			return 1;
 		}
+        // se ocorreu erro na insersao
 		else
 			return 0;
 	}
