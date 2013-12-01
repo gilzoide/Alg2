@@ -17,12 +17,16 @@
 
 
 
-void AVL_create (AVL *A) {
+void AVL_create (AVL *A, int (*compare)(void*, void*)) {
+    
 	A->root = NULL;
+    A->compare = compare;
+    
 }
 
 
 void AVL_right_right_rotation (node **p) {
+    
 	node *parent = *p;
 	node *child = parent->right;
 	
@@ -30,10 +34,12 @@ void AVL_right_right_rotation (node **p) {
 	child->left = parent;
 	parent->balance_factor = child->balance_factor = 0;
 	*p = child;
+    
 }
 
 
 void AVL_left_left_rotation (node **p) {
+    
 	node *parent = *p;
 	node *child = parent->left;
 	
@@ -41,10 +47,12 @@ void AVL_left_left_rotation (node **p) {
 	child->right = parent;
 	parent->balance_factor = child->balance_factor = 0;
 	*p = child;
+    
 }
 
 
 void AVL_left_right_rotation (node **p) {
+    
 	node *parent = *p;
 	node *child = parent->left;
 	node *grandchild = child->right;
@@ -70,10 +78,12 @@ void AVL_left_right_rotation (node **p) {
 	
 	grandchild->balance_factor = 0;
 	*p = grandchild;
+    
 }
 
 
 void AVL_right_left_rotation (node **p) {
+    
 	node *parent = *p;
 	node *child = parent->right;
 	node *grandchild = child->left;
@@ -99,10 +109,12 @@ void AVL_right_left_rotation (node **p) {
 	
 	grandchild->balance_factor = 0;
 	*p = grandchild;
+    
 }
 
 
 int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) {
+    
 	// lugar certo pra por o novo No
 	if (*p == NULL) {
 		*p = (node*) malloc (sizeof (node));
@@ -161,11 +173,18 @@ int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) 
 		}
 		else
 			return 0;
-	}	
+	}
+    
 }
 
 
 int AVL_insert (AVL *A, void* x) {
-	int cresceu;
-	return AVL_aux_insert (&A->root, x, &cresceu, A->compare);
+    
+	int grew;
+	return AVL_aux_insert (&A->root, x, &grew, A->compare);
+    
 }
+
+
+
+
