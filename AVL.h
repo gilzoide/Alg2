@@ -11,14 +11,13 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-typedef void elem;
 
 /*!
  *  Registro que define um no/folha/subarvore da AVL
  */
 typedef struct node {
 	
-    elem* info;                     /*!< elemento que sera guardado na AVL */
+    void* info;                     /*!< elemento que sera guardado na AVL, void para suportar polimorfismo */
 	char balance_factor;            /*!< fator de balanceamento: altura esquerda - altura direita */
 	struct node *left, *right;      /*!< encadeamento esquerda e direita */
     
@@ -30,7 +29,7 @@ typedef struct node {
 typedef struct {
     
 	node *root;                     /*!< raiz da AVL */
-    int (*compare)(elem*, elem*);   /*!< ponteiro para funcao que compara elementos */
+    int (*compare)(void*, void*);   /*!< ponteiro para funcao que compara elementos */
     int size_of_elem;               /*!< tamanho de um elemento */
     
 } AVL;

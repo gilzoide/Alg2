@@ -102,7 +102,7 @@ void AVL_right_left_rotation (node **p) {
 }
 
 
-int AVL_aux_insert (node **p, int *x, int *grew, int (*compare)(elem*, elem*)) {
+int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) {
 	// lugar certo pra por o novo No
 	if (*p == NULL) {
 		*p = (node*) malloc (sizeof (node));
@@ -165,7 +165,7 @@ int AVL_aux_insert (node **p, int *x, int *grew, int (*compare)(elem*, elem*)) {
 }
 
 
-int AVL_insert (AVL *A, int *x) {
+int AVL_insert (AVL *A, void* x) {
 	int cresceu;
 	return AVL_aux_insert (&A->root, x, &cresceu, A->compare);
 }
