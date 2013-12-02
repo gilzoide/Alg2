@@ -23,7 +23,6 @@ void AVL_create (AVL *A, int (*compare)(void*, void*)) {
     
 	A->root = NULL;
     A->compare = compare;
-    A->root->height = 0;
     
 }
 
@@ -143,7 +142,7 @@ node* AVL_insert_aux(node* root, void* info, int (*compare)(void*, void*)) {
 
 void AVL_insert(AVL* A, void* info) {
     
-    AVL_insert_aux(A->root, info, A->compare);
+    A->root = AVL_insert_aux(A->root, info, A->compare);
     
 }
 
@@ -252,7 +251,7 @@ node* AVL_delete_aux(node* root, void* info, void** deleted_element, int (*compa
 void* AVL_delete(AVL* A, void* info) {
     
     void* deleted_element = NULL;
-    AVL_delete_aux(A->root, info, &deleted_element, A->compare);
+    A->root = AVL_delete_aux(A->root, info, &deleted_element, A->compare);
     return deleted_element;
 }
 
@@ -268,6 +267,20 @@ void AVL_pre_order_aux(node *root, void (*print_content)(void*)) {
 void AVL_pre_order(AVL* A, void (*print_content)(void*)) {
     
     AVL_pre_order_aux(A->root, print_content);
+}
+
+void AVL_in_order_aux(node *root, void (*print_content)(void*)) {
+    
+    if(root != NULL) {
+        AVL_pre_order_aux(root->left, print_content);
+        (*print_content)(root->info);
+        AVL_pre_order_aux(root->right, print_content);
+    }
+}
+
+void AVL_in_order(AVL* A, void (*print_content)(void*)) {
+    
+    AVL_in_order_aux(A->root, print_content);
 }
 
 
