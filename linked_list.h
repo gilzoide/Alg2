@@ -48,7 +48,7 @@ typedef struct {
  ponteiro para a funcao de comparacao dos elementos
  
  */
-int LL_create(linked_list* L, int (*compare)(void*, void*));
+void LL_create(linked_list* L, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
