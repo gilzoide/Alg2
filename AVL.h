@@ -19,6 +19,7 @@ typedef struct node {
 	
     void* info;                     /*!< elemento que sera guardado na AVL, void para suportar polimorfismo */
 	char balance_factor;            /*!< fator de balanceamento: altura esquerda - altura direita */
+    int height;
 	struct node *left, *right;      /*!< encadeamento esquerda e direita */
     
 } node;
@@ -61,7 +62,7 @@ void AVL_create (AVL *A, int (*compare)(void*, void*));
  retorna 1 se a insersão foi bem sucedida, 0 caso contrário
  
  */
-int AVL_insert (AVL *A, void* x);
+int AVL_AVL_insert (AVL *A, void* x);
 
 /*!
  
@@ -77,4 +78,4 @@ int AVL_insert (AVL *A, void* x);
  retorna 1 se a operacao foi bem sucedida, 0 caso contrário (elemento nao encontrado)
  
  */
-node* AVL_delete (AVL *A, void* x);
+node* AVL_delete (AVL* A, void* x);

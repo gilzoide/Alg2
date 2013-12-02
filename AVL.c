@@ -14,6 +14,8 @@
 
 #include "AVL.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 
 
@@ -21,251 +23,236 @@ void AVL_create (AVL *A, int (*compare)(void*, void*)) {
     
 	A->root = NULL;
     A->compare = compare;
+    A->root->height = 0;
     
 }
 
+// A utility function to get height of the tree
+int AVL_height(node *N) {
+    if (N == NULL)
+        return 0;
+    return N->height;
+}
 
-void AVL_right_right_rotation (node **p) {
+// A utility function to get maximum of two integers
+int max(int a, int b) {
+    return (a > b)? a : b;
+}
+
+/* Helper function that allocates a new node with the given key and
+ NULL left and right pointers. */
+node* AVL_new_node(void* info) {
     
-	node *parent = *p;
-	node *child = parent->right;
-	
-	parent->right = child->left;	// colisao
-	child->left = parent;
-	parent->balance_factor = child->balance_factor = 0;
-	*p = child;
+    node* new_node = (node*) malloc(sizeof(node));
+    new_node->info   = info;
+    new_node->left   = NULL;
+    new_node->right  = NULL;
+    new_node->height = 1;  // new node is initially added at leaf
+    return(new_node);
     
 }
 
-
-void AVL_left_left_rotation (node **p) {
+// A utility function to right rotate subtree rooted with y
+// See the diagram given above.
+node* right_rotate(node *y) {
     
-	node *parent = *p;
-	node *child = parent->left;
-	
-	parent->left = child->right;	// colisao
-	child->right = parent;
-	parent->balance_factor = child->balance_factor = 0;
-	*p = child;
+    node *x = y->left;
+    node *T2 = x->right;
     
+    // Perform rotation
+    x->right = y;
+    y->left = T2;
+    
+    // Update heights
+    y->height = max(AVL_height(y->left), AVL_height(y->right))+1;
+    x->height = max(AVL_height(x->left), AVL_height(x->right))+1;
+    
+    // Return new root
+    return x;
 }
 
-
-void AVL_left_right_rotation (node **p) {
+// A utility function to left rotate subtree rooted with x
+// See the diagram given above.
+node* left_rotate(node *x) {
+    node *y = x->right;
+    node *T2 = y->left;
     
-	node *parent = *p;
-	node *child = parent->left;
-	node *grandchild = child->right;
-	
-	parent->left = grandchild->right;	// colisao
-	child->right = grandchild->left;
-	grandchild->right = parent;
-	
-	switch (grandchild->balance_factor) {
-		case 1:
-			parent->balance_factor = 0;
-			child->balance_factor = -1;
-			break;
-		case 0:
-			parent->balance_factor = 0;
-			child->balance_factor = 0;
-			break;
-		case -1:
-			parent->balance_factor = 1;
-			child->balance_factor = 0;
-			break;
-	}
-	
-	grandchild->balance_factor = 0;
-	*p = grandchild;
+    // Perform rotation
+    y->left = x;
+    x->right = T2;
     
+    //  Update heights
+    x->height = max(AVL_height(x->left), AVL_height(x->right))+1;
+    y->height = max(AVL_height(y->left), AVL_height(y->right))+1;
+    
+    // Return new root
+    return y;
 }
 
-
-void AVL_right_left_rotation (node **p) {
-    
-	node *parent = *p;
-	node *child = parent->right;
-	node *grandchild = child->left;
-	
-	parent->right = grandchild->left;	// colisao
-	child->left = grandchild->right;
-	grandchild->right = parent;
-	
-	switch (grandchild->balance_factor) {
-		case -1:
-			parent->balance_factor = 1;
-			child->balance_factor = 0;
-			break;
-		case 0:
-			parent->balance_factor = 0;
-			child->balance_factor = 0;
-			break;
-		case 1:
-			parent->balance_factor = 0;
-			child->balance_factor = -1;
-			break;
-	}
-	
-	grandchild->balance_factor = 0;
-	*p = grandchild;
-    
+// Get Balance factor of node N
+int AVL_balance(node *N) {
+    if (N == NULL)
+        return 0;
+    return AVL_height(N->left) - AVL_height(N->right);
 }
 
-
-int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) {
+node* AVL_insert(node* node, void* info, int (*compare)(void*, void*)) {
+    /* 1.  Perform the normal BST rotation */
+    if (node == NULL)
+        return(AVL_new_node(info));
     
-	// lugar correto da insersao encontrado
-	if (*p == NULL) {
-        
-        // aloca memoria
-		*p = (node*) malloc (sizeof (node));
-        if (p == NULL) return 0;
-        
-        // insere na arvore
-		(*p)->info = x;
-		(*p)->balance_factor = 0;
-		(*p)->left = (*p)->right = NULL;
-        
-        // indica que a subarvore cresceu
-		*grew = 1;
-        
-		return 1;
-	}
-	// x == info // erro na insercao
-	else if ((*compare)(x, (*p)->info) == 0)
-		return 0;
-	// x < info
-	else if ((*compare)(x, (*p)->info) < 0) {
-        // tenta inserir na subarvore esquerda
-		if (AVL_aux_insert (&(*p)->left, x, grew, compare)) {
-            
-            // se a subarvore cresceu
-			if (*grew) {
-				switch ((*p)->balance_factor) {
-					// haveria desbalanceamento
-                    case -1:
-						((*p)->left->balance_factor == -1) ? AVL_left_left_rotation (p) : AVL_left_right_rotation (p);
-						*grew = 0;
-						break;
-                    // estava perfeitamente balanceada
-					case 0:
-						(*p)->balance_factor = -1;
-						*grew = 1;
-						break;
-                    // estava "pesada" na direita
-					case 1:
-						(*p)->balance_factor = 0;
-						*grew = 0;
-						break;
-				}
-			}
-			return 1;
-		}
-        // se ocorreu erro na insercao
-		else
-			return 0;
-	}
-	else {	// x > info
-		// tenta inserir na subarvore direita
-        if (AVL_aux_insert (&(*p)->right, x, grew, compare)) {
-			// se a subarvore cresceu
-            if (*grew) {
-				switch ((*p)->balance_factor) {
-					// estava "pesada" na esquerda
-                    case -1:
-						(*p)->balance_factor = 0;
-						*grew = 0;
-						break;
-					// estava perfeitamente balanceada
-                    case 0:
-						(*p)->balance_factor = -1;
-						*grew = 1;
-						break;
-					// haveria desbalanceamento
-                    case 1:
-						((*p)->right->balance_factor == 1) ? AVL_right_right_rotation (p) : AVL_right_left_rotation (p);
-						*grew = 0;
-						break;
-				}
-			}
-			return 1;
-		}
-        // se ocorreu erro na insersao
-		else
-			return 0;
-	}
+    if ((*compare)(info, node->info) < 0)
+        node->left  = AVL_insert(node->left, info, compare);
+    else
+        node->right = AVL_insert(node->right, info, compare);
     
+    /* 2. Update height of this ancestor node */
+    node->height = max(AVL_height(node->left), AVL_height(node->right)) + 1;
+    
+    /* 3. Get the balance factor of this ancestor node to check whether
+     this node became unbalanced */
+    int balance = AVL_balance(node);
+    
+    // If this node becomes unbalanced, then there are 4 cases
+    
+    // Left Left Case
+    if (balance > 1 && (*compare)(info, node->left->info) < 0)
+        return right_rotate(node);
+    
+    // Right Right Case
+    if (balance < -1 && (*compare)(info, node->right->info) > 0)
+        return left_rotate(node);
+    
+    // Left Right Case
+    if (balance > 1 && (*compare)(info, node->left->info) > 0)
+    {
+        node->left =  left_rotate(node->left);
+        return right_rotate(node);
+    }
+    
+    // Right Left Case
+    if (balance < -1 && (*compare)(info, node->right->info) < 0)
+    {
+        node->right = right_rotate(node->right);
+        return left_rotate(node);
+    }
+    
+    /* return the (unchanged) node pointer */
+    return node;
 }
 
-
-int AVL_insert (AVL *A, void* x) {
+/* Given a non-empty binary search tree, return the node with minimum
+ key value found in that tree. Note that the entire tree does not
+ need to be searched. */
+node * AVL_min_value_node(node* root) {
     
-	int grew;
-	return AVL_aux_insert (&A->root, x, &grew, A->compare);
+    node* current = root;
     
+    /* loop down to find the leftmost leaf */
+    while (current->left != NULL)
+        current = current->left;
+    
+    return current;
 }
 
-node* AVL_delete_aux (node* root, void* x, int* decreased, int (*compare)(void*, void*)) {
+node* AVL_delete_aux(node* root, void* info, int (*compare)(void*, void*)) {
     
-    // parte 1: deletar o nó da arvore
+    // STEP 1: PERFORM STANDARD BST DELETE
     
     if (root == NULL)
         return root;
     
-    // busca na subarvore da esquerda
-    if ((*compare)(x, root->info) < 0)
-        root->left = AVL_delete_aux(root->left, x, decreased, compare);
+    // If the key to be deleted is smaller than the root's key,
+    // then it lies in left subtree
+    if ((*compare)(info, root->info) < 0)
+        root->left = AVL_delete_aux(root->left, info);
     
-    // busca na subarvore da direita
-    else if((*compare)(x, root->info) > 0)
-        root->right = AVL_delete_aux(root->right, x, decreased, compare);
+    // If the key to be deleted is greater than the root's key,
+    // then it lies in right subtree
+    else if((*compare)(info, root->info) > 0)
+        root->right = AVL_delete_aux(root->right, info);
     
-    // o valor foi encontrado
-    else { // root == x
-        // no com 1 ou nenhum filho
+    // if key is same as root's key, then This is the node
+    // to be deleted
+    else {
+        // node with only one child or no child
         if( (root->left == NULL) || (root->right == NULL) ) {
             node *temp = root->left ? root->left : root->right;
             
-            // no sem filhos
-            if(temp == NULL) {
+            // No child case
+            if(temp == NULL)
+            {
                 temp = root;
                 root = NULL;
             }
-            else // no com um filho
-                *root = *temp;
+            else // One child case
+                *root = *temp; // Copy the contents of the non-empty child
             
             free(temp);
         }
-        
-        // no com os dois filhos
         else {
-            
-            // encontra o menor no da arvore direita
+            // node with two children: Get the inorder successor (smallest
+            // in the right subtree)
             node* temp = AVL_min_value_node(root->right);
             
-            // copia o valor deste no
+            // Copy the inorder successor's data to this node
             root->info = temp->info;
             
-            // apaga o no onde estava o mesmo
-            root->right = AVL_delete_aux(root->right, temp->info, decreased, compare);
+            // Delete the inorder successor
+            root->right = AVL_delete_aux(root->right, temp->info);
         }
     }
     
-    // se a arvore so tinha este no, fim
+    // If the tree had only one node then return
     if (root == NULL)
         return root;
     
-    return root;
+    // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
+    root->height = max(AVL_height(root->left), AVL_height(root->right)) + 1;
     
+    // STEP 3: GET THE BALANCE FACTOR OF THIS NODE (to check whether
+    //  this node became unbalanced)
+    int balance = AVL_balance(root);
+    
+    // If this node becomes unbalanced, then there are 4 cases
+    
+    // Left Left Case
+    if (balance > 1 && AVL_balance(root->left) >= 0)
+        return right_rotate(root);
+    
+    // Left Right Case
+    if (balance > 1 && AVL_balance(root->left) < 0) {
+        root->left =  left_rotate(root->left);
+        return right_rotate(root);
+    }
+    
+    // Right Right Case
+    if (balance < -1 && AVL_balance(root->right) <= 0)
+        return left_rotate(root);
+    
+    // Right Left Case
+    if (balance < -1 && AVL_balance(root->right) > 0) {
+        root->right = right_rotate(root->right);
+        return left_rotate(root);
+    }
+    
+    return root;
 }
 
-node* AVL_delete(AVL* A, void* x) {
+node* AVL_delete(AVL* A, void* info) {
     
-    int decreased;
-    node* deleted = AVL_delete_aux(A->root, x, &decreased, A->compare);
-    return deleted;
+    return NULL;
+}
+
+// A utility function to print pre-order traversal of the tree.
+// The function also prints height of every node
+void AVL_pre_order(node *root, void (*print_content)(void*)) {
     
+    if(root != NULL) {
+        (*print_content)(root->info);
+        AVL_pre_order(root->left, print_content);
+        AVL_pre_order(root->right, print_content);
+    }
 }
 
 
