@@ -79,8 +79,8 @@ void* AVL_delete (AVL* A, void* x);
 
 /*!
  
- Imprime o conteudo de uma AVL nas ordens
- especificadas de acordo com a funcao de impressao 
+ Imprime o conteudo de uma AVL em pre-ordem 
+ de acordo com a funcao de impressao
  passada como parametro
  
  @param A
@@ -91,5 +91,19 @@ void* AVL_delete (AVL* A, void* x);
  
  */
 void AVL_pre_order(AVL* A, void (*print_content)(void*));
+
+/*!
+ 
+ Imprime o conteudo de uma AVL em ordem
+ de acordo com a funcao de impressao
+ passada como parametro
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @param print_content
+ funcao que imprime elementos na tela
+ 
+ */
 void AVL_in_order(AVL* A, void (*print_content)(void*));
 

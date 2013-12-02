@@ -30,7 +30,6 @@ int main(int argc, const char * argv[])
     
     int a = 2, b = 3, c =8, d = 20, e = 7;
     
-    
     AVL_insert(&integers, &a);
     AVL_insert(&integers, &b);
     AVL_insert(&integers, &c);
