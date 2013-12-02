@@ -58,24 +58,36 @@ void AVL_create (AVL *A, int (*compare)(void*, void*));
  @param x
  ponteiro para o elemento que sera inserido
  
- @result
- retorna 1 se a insersão foi bem sucedida, 0 caso contrário
- 
  */
-int AVL_AVL_insert (AVL *A, void* x);
+void AVL_insert (AVL *A, void* x);
 
 /*!
  
- Apaga um elemento da AVL
+ Retira um elemento da AVL
  
  @param A
  ponteiro para a arvore AVL
  
  @param x
- ponteiro para o elemento que sera apagado
+ ponteiro para o elemento que sera retirado
  
  @result
- retorna 1 se a operacao foi bem sucedida, 0 caso contrário (elemento nao encontrado)
+ retorna o elemento retirado, ou NULL em caso de erro
  
  */
-node* AVL_delete (AVL* A, void* x);
+void* AVL_delete (AVL* A, void* x);
+
+/*!
+ 
+ Imprime o conteudo de uma AVL em pre-ordem de
+ acordo com a funcao de impressao passada como parametro
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @param print_content
+ funcao que imprime elementos na tela
+ 
+ */
+void AVL_pre_order(AVL* A, void (*print_content)(void*));
+

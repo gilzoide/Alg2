@@ -96,49 +96,55 @@ int AVL_balance(node *N) {
     return AVL_height(N->left) - AVL_height(N->right);
 }
 
-node* AVL_insert(node* node, void* info, int (*compare)(void*, void*)) {
-    /* 1.  Perform the normal BST rotation */
-    if (node == NULL)
+node* AVL_insert_aux(node* root, void* info, int (*compare)(void*, void*)) {
+    /* 1.  Perform the normal BST insertion */
+    if (root == NULL)
         return(AVL_new_node(info));
     
-    if ((*compare)(info, node->info) < 0)
-        node->left  = AVL_insert(node->left, info, compare);
+    if ((*compare)(info, root->info) < 0)
+        root->left  = AVL_insert_aux(root->left, info, compare);
     else
-        node->right = AVL_insert(node->right, info, compare);
+        root->right = AVL_insert_aux(root->right, info, compare);
     
     /* 2. Update height of this ancestor node */
-    node->height = max(AVL_height(node->left), AVL_height(node->right)) + 1;
+    root->height = max(AVL_height(root->left), AVL_height(root->right)) + 1;
     
     /* 3. Get the balance factor of this ancestor node to check whether
      this node became unbalanced */
-    int balance = AVL_balance(node);
+    int balance = AVL_balance(root);
     
     // If this node becomes unbalanced, then there are 4 cases
     
     // Left Left Case
-    if (balance > 1 && (*compare)(info, node->left->info) < 0)
-        return right_rotate(node);
+    if (balance > 1 && (*compare)(info, root->left->info) < 0)
+        return right_rotate(root);
     
     // Right Right Case
-    if (balance < -1 && (*compare)(info, node->right->info) > 0)
-        return left_rotate(node);
+    if (balance < -1 && (*compare)(info, root->right->info) > 0)
+        return left_rotate(root);
     
     // Left Right Case
-    if (balance > 1 && (*compare)(info, node->left->info) > 0)
+    if (balance > 1 && (*compare)(info, root->left->info) > 0)
     {
-        node->left =  left_rotate(node->left);
-        return right_rotate(node);
+        root->left =  left_rotate(root->left);
+        return right_rotate(root);
     }
     
     // Right Left Case
-    if (balance < -1 && (*compare)(info, node->right->info) < 0)
+    if (balance < -1 && (*compare)(info, root->right->info) < 0)
     {
-        node->right = right_rotate(node->right);
-        return left_rotate(node);
+        root->right = right_rotate(root->right);
+        return left_rotate(root);
     }
     
     /* return the (unchanged) node pointer */
-    return node;
+    return root;
+}
+
+void AVL_insert(AVL* A, void* info) {
+    
+    AVL_insert_aux(A->root, info, A->compare);
+    
 }
 
 /* Given a non-empty binary search tree, return the node with minimum
@@ -155,7 +161,7 @@ node * AVL_min_value_node(node* root) {
     return current;
 }
 
-node* AVL_delete_aux(node* root, void* info, int (*compare)(void*, void*)) {
+node* AVL_delete_aux(node* root, void* info, void** deleted_element, int (*compare)(void*, void*)) {
     
     // STEP 1: PERFORM STANDARD BST DELETE
     
@@ -165,16 +171,20 @@ node* AVL_delete_aux(node* root, void* info, int (*compare)(void*, void*)) {
     // If the key to be deleted is smaller than the root's key,
     // then it lies in left subtree
     if ((*compare)(info, root->info) < 0)
-        root->left = AVL_delete_aux(root->left, info);
+        root->left = AVL_delete_aux(root->left, info, deleted_element, compare);
     
     // If the key to be deleted is greater than the root's key,
     // then it lies in right subtree
     else if((*compare)(info, root->info) > 0)
-        root->right = AVL_delete_aux(root->right, info);
+        root->right = AVL_delete_aux(root->right, info, deleted_element, compare);
     
     // if key is same as root's key, then This is the node
     // to be deleted
     else {
+        
+        // salva o elemento
+        *deleted_element = root;
+        
         // node with only one child or no child
         if( (root->left == NULL) || (root->right == NULL) ) {
             node *temp = root->left ? root->left : root->right;
@@ -199,7 +209,7 @@ node* AVL_delete_aux(node* root, void* info, int (*compare)(void*, void*)) {
             root->info = temp->info;
             
             // Delete the inorder successor
-            root->right = AVL_delete_aux(root->right, temp->info);
+            root->right = AVL_delete_aux(root->right, temp->info, deleted_element, compare);
         }
     }
     
@@ -239,20 +249,25 @@ node* AVL_delete_aux(node* root, void* info, int (*compare)(void*, void*)) {
     return root;
 }
 
-node* AVL_delete(AVL* A, void* info) {
+void* AVL_delete(AVL* A, void* info) {
     
-    return NULL;
+    void* deleted_element = NULL;
+    AVL_delete_aux(A->root, info, &deleted_element, A->compare);
+    return deleted_element;
 }
 
-// A utility function to print pre-order traversal of the tree.
-// The function also prints height of every node
-void AVL_pre_order(node *root, void (*print_content)(void*)) {
+void AVL_pre_order_aux(node *root, void (*print_content)(void*)) {
     
     if(root != NULL) {
         (*print_content)(root->info);
-        AVL_pre_order(root->left, print_content);
-        AVL_pre_order(root->right, print_content);
+        AVL_pre_order_aux(root->left, print_content);
+        AVL_pre_order_aux(root->right, print_content);
     }
+}
+
+void AVL_pre_order(AVL* A, void (*print_content)(void*)) {
+    
+    AVL_pre_order_aux(A->root, print_content);
 }
 
 
