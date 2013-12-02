@@ -77,4 +77,4 @@ int AVL_insert (AVL *A, void* x);
  retorna 1 se a operacao foi bem sucedida, 0 caso contrário (elemento nao encontrado)
  
  */
-int AVL_delete (AVL *A, void* x);
+node* AVL_delete (AVL *A, void* x);

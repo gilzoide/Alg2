@@ -140,7 +140,7 @@ int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) 
         // tenta inserir na subarvore esquerda
 		if (AVL_aux_insert (&(*p)->left, x, grew, compare)) {
             
-            // se a subarvore creaceu
+            // se a subarvore cresceu
 			if (*grew) {
 				switch ((*p)->balance_factor) {
 					// haveria desbalanceamento
@@ -172,7 +172,7 @@ int AVL_aux_insert (node **p, void* x, int *grew, int (*compare)(void*, void*)) 
 			// se a subarvore cresceu
             if (*grew) {
 				switch ((*p)->balance_factor) {
-					// estava "pesada" na direita
+					// estava "pesada" na esquerda
                     case -1:
 						(*p)->balance_factor = 0;
 						*grew = 0;
@@ -205,6 +205,73 @@ int AVL_insert (AVL *A, void* x) {
 	return AVL_aux_insert (&A->root, x, &grew, A->compare);
     
 }
+
+node* AVL_delete_aux (node* root, void* x, int* decreased, int (*compare)(void*, void*)) {
+    
+    // parte 1: deletar o nó da arvore
+    
+    if (root == NULL)
+        return root;
+    
+    // busca na subarvore da esquerda
+    if ((*compare)(x, root->info) < 0)
+        root->left = AVL_delete_aux(root->left, x, decreased, compare);
+    
+    // busca na subarvore da direita
+    else if((*compare)(x, root->info) > 0)
+        root->right = AVL_delete_aux(root->right, x, decreased, compare);
+    
+    // o valor foi encontrado
+    else { // root == x
+        // no com 1 ou nenhum filho
+        if( (root->left == NULL) || (root->right == NULL) ) {
+            node *temp = root->left ? root->left : root->right;
+            
+            // no sem filhos
+            if(temp == NULL) {
+                temp = root;
+                root = NULL;
+            }
+            else // no com um filho
+                *root = *temp;
+            
+            free(temp);
+        }
+        
+        // no com os dois filhos
+        else {
+            
+            // encontra o menor no da arvore direita
+            node* temp = AVL_min_value_node(root->right);
+            
+            // copia o valor deste no
+            root->info = temp->info;
+            
+            // apaga o no onde estava o mesmo
+            root->right = AVL_delete_aux(root->right, temp->info, decreased, compare);
+        }
+    }
+    
+    // se a arvore so tinha este no, fim
+    if (root == NULL)
+        return root;
+    
+    return root;
+    
+}
+
+node* AVL_delete(AVL* A, void* x) {
+    
+    int decreased;
+    node* deleted = AVL_delete_aux(A->root, x, &decreased, A->compare);
+    return deleted;
+    
+}
+
+
+
+
+
 
 
 
