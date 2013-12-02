@@ -21,7 +21,7 @@
 objs = main.o AVL.o
 source = main.c AVL.h AVL.c
 
-CFLAGS = -g -O2 -march=native
+CFLAGS = -g -O3 -march=native
 
 
 
@@ -38,7 +38,8 @@ AVL.o : AVL.c AVL.h
 
 
 
-run : main.o
+
+run : $(objs)
 		@./main
 
 commit :
@@ -48,4 +49,4 @@ zip :
 		@zip alg1 $(source) makefile
 
 clean :
-		@rm main $(objs) *~ alg1.zip
+		@rm -r html main *.o *~ alg1.zip
