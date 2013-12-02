@@ -35,6 +35,7 @@ typedef struct {
 } AVL;
 
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
  
  Cria uma arvore AVL
@@ -48,6 +49,7 @@ typedef struct {
  */
 void AVL_create (AVL *A, int (*compare)(void*, void*));
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
  
  Insere um novo elemento na AVL
@@ -61,6 +63,7 @@ void AVL_create (AVL *A, int (*compare)(void*, void*));
  */
 void AVL_insert (AVL *A, void* x);
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
  
  Retira um elemento da AVL
@@ -77,6 +80,7 @@ void AVL_insert (AVL *A, void* x);
  */
 void* AVL_delete (AVL* A, void* x);
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
  
  Imprime o conteudo de uma AVL em pre-ordem 
@@ -92,6 +96,7 @@ void* AVL_delete (AVL* A, void* x);
  */
 void AVL_pre_order(AVL* A, void (*print_content)(void*));
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
  
  Imprime o conteudo de uma AVL em ordem
