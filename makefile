@@ -18,7 +18,7 @@
 # Makefile da geral 2.0!
 # Agora melhor, mais compacto e aprimorado!
 
-objs = main.o AVL.o
+objs = main.o AVL.o linked_list.o
 source = main.c AVL.h AVL.c
 
 CFLAGS = -g -O2 -march=native
@@ -35,6 +35,8 @@ main.o : main.c AVL.h
 AVL.o : AVL.c AVL.h
 	cc -c AVL.c $(CFLAGS)
 
+linked_list.o : linked_list.c linked_list.h
+	cc -c linked_list.c $(CFLAGS)
 
 
 
@@ -48,4 +50,4 @@ zip :
 		@zip alg1 $(source) makefile
 
 clean :
-		@rm main $(objs) *~ alg1.zip
+		@rm -r html main $(objs) *~ alg1.zip
