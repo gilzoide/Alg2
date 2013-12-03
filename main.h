@@ -28,12 +28,14 @@ typedef struct {
 typedef struct {
     
     linked_list words;
+    user* user_who_posted;
     
 } tweet;
 
 typedef struct {
     
     string text;
+    linked_list tweets;
     int counter;
     
 } word;
@@ -45,5 +47,85 @@ string get_string(void);
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 int get_int(void);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int compare_users(void*, void*);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int compare_users_by_name(void*, void*);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int compare_messages(void*, void*);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int compare_messages_by_text(void*, void*);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int compare_words(void*, void*);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void show_menu();
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_create(AVL* users, linked_list* users_list, int (*compare)(void*, void*));
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void user_add(AVL* users, linked_list* users_list, int (*compare_tweets)(void*, void*));
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void user_delete(AVL* users, linked_list* users_list);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_with_messages_create(AVL* users_with_messages, int (*compare)(void*, void*));
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words, int (*compare)(void*, void*));
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* words);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_list_by_name(AVL* users);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_list_by_entry(linked_list* users_list);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_with_messages_list_by_name(AVL* users_with_messages);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_with_messages_count(AVL* users_with_messages);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_with_messages_count_messages(AVL* users_with_messages);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void words_find_messages(linked_list* words);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void words_show_keywords(linked_list* words);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_updated_user(AVL* users_with_messages, linked_list* words);
 
 #endif
