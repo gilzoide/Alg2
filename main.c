@@ -570,7 +570,22 @@ void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* wor
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+void users_print(void* x) {
+    
+    user* printed_user = (user*) x;
+    printf("%s\n", printed_user->name);
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 void users_list_by_name(AVL* users) {
+    
+    printf("\nUsuários em ordem alfabética:\n\n");
+    if (users->root == NULL)
+        printf("nenhum usuário\n");
+    else
+        AVL_in_order(users, &users_print);
     
 }
 
@@ -578,11 +593,23 @@ void users_list_by_name(AVL* users) {
 
 void users_list_by_entry(linked_list* users_list) {
     
+    printf("\nUsuários em ordem de cadastro:\n\n");
+    if (users_list->head == NULL)
+        printf("nenhum usuário\n");
+    else
+        LL_print(users_list, &users_print);
+    
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void users_with_messages_list_by_name(AVL* users_with_messages) {
+    
+    printf("\nUsuários que postaram mensagens em ordem alfabética:\n\n");
+    if (users_with_messages->root == NULL)
+        printf("nenhum usuário\n");
+    else
+        AVL_in_order(users_with_messages, &users_print);
     
 }
 
