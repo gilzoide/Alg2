@@ -124,7 +124,36 @@ void* LL_delete_with_another_compare(linked_list* L, void* info, int (*compare)(
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-void LL_destroy(linked_list* L, int must_free) {
+void* LL_delete_nth_element(linked_list* L, int n) {
+    
+    LL_node** p = NULL;
+    int i;
+    
+    // percorre a lista encadeada, buscando o no
+    for (p = &(L->head), i = 0; (*p != NULL) && i < n; p = &(*p)->next, i++);
+    
+    // verifica se foi encontrado
+    if (*p != NULL) {
+        
+        // salva a informacao para o retorno
+        void* deleted_info = (*p)->info;
+        
+        // apaga o no
+        LL_node* tmp = *p;
+        *p = (*p)->next;
+        free(tmp);
+        
+        return deleted_info;
+    }
+    
+    else
+        return NULL;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void LL_destroy(linked_list* L) {
     
     LL_node* p = L->head;
     
@@ -134,8 +163,27 @@ void LL_destroy(linked_list* L, int must_free) {
         LL_node* tmp = p;
         p = p->next;
         
-        // liberando os nos (e, caso necessario, seus elementos)
-        if (must_free) free(tmp->info);
+        // liberando os nos
+        free(tmp);
+        
+    }
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void LL_destroy_with_function(linked_list* L, void (*destroy_elem)(void*)) {
+    
+    LL_node* p = L->head;
+    
+    // percorre a lista
+    while (p != NULL) {
+        
+        LL_node* tmp = p;
+        p = p->next;
+        
+        // liberando os nos (e executando a funcao auxiliar)
+        (*destroy_elem)(p->info);
         free(tmp);
         
     }
@@ -157,6 +205,7 @@ void LL_print(linked_list* L, void (*print)(void*)) {
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void* LL_search(linked_list* A, void* info) {
+    
     
     return NULL;
     

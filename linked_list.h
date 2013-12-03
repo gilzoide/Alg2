@@ -98,6 +98,23 @@ void* LL_delete(linked_list* L, void* info);
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
  
+ Retira o enésimo elemento da lista
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @param n
+ posição do elemento
+ 
+ @result
+ retorna o elemento retirado ou NULL em caso de erro
+ 
+ */
+void* LL_delete_nth_element(linked_list* L, int n);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
  Retira um elemento da lista, mas recebe uma funcao de
  comparacao diferente da padrao, util para buscas
  diferenciadas
@@ -125,12 +142,25 @@ void* LL_delete_with_another_compare(linked_list* L, void* info, int (*compare)(
  @param A
  ponteiro para a lista
  
- @param must_free
- flag que indica se a memoria dos elementos da lista deve ser liberada
+ */
+
+void LL_destroy(linked_list* L);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Destroi a lista encadeada, aplicando uma função, 
+ passada como parâmetro, em cada elemento apagado
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @param void(*destroy_elem)(void*)
+ função que será aplicada nos elementos
  
  */
 
-void LL_destroy(linked_list* L, int must_free);
+void LL_destroy_with_function(linked_list* L, void (*destroy_elem)(void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!

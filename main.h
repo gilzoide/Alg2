@@ -58,6 +58,10 @@ int compare_users_by_name(void*, void*);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+string message_build_text(tweet* the_tweet);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 int compare_messages(void*, void*);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
@@ -66,7 +70,11 @@ int compare_messages_by_text(void*, void*);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-int compare_words(void*, void*);
+int compare_words_by_text(void* a, void* b);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int compare_words_by_counter(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
@@ -82,11 +90,15 @@ void user_add(AVL* users, linked_list* users_list, int (*compare_tweets)(void*, 
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-void user_delete(AVL* users, linked_list* users_list);
+void user_delete(AVL* users, AVL* users_with_messages, linked_list* users_list);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-void users_with_messages_create(AVL* users_with_messages, int (*compare)(void*, void*));
+void message_destroy(void* message);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void users_with_messages_create(AVL* users_with_messages, linked_list* words, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 

@@ -322,6 +322,7 @@ void AVL_in_order(AVL* A, void (*print_content)(void*)) {
 
 void* AVL_search(AVL* A, void* info) {
     
+    
     return NULL;
     
 }
