@@ -191,7 +191,7 @@ void LL_print(linked_list* L, void (*print)(void*));
  retorna o elemento encontrado ou NULL em caso de erro
  
  */
-void* LL_search(linked_list* A, void* info);
+void* LL_search(linked_list* L, void* info);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
@@ -213,6 +213,6 @@ void* LL_search(linked_list* A, void* info);
  retorna o elemento encontrado ou NULL em caso de erro
  
  */
-void* LL_search_with_another_compare(linked_list* A, void* info, int (*compare)(void*, void*));
+void* LL_search_with_another_compare(linked_list* L, void* info, int (*compare)(void*, void*));
 
 #endif

@@ -204,16 +204,27 @@ void LL_print(linked_list* L, void (*print)(void*)) {
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-void* LL_search(linked_list* A, void* info) {
+void* LL_search(linked_list* L, void* info) {
     
+    LL_node* p = NULL;
     
-    return NULL;
+    // percorre a lista encadeada, buscando o no
+    for (p = L->head; p != NULL && ((*L->compare)(info, p->info) != 0); p = p->next);
+    
+    return p;
     
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-void* LL_search_with_another_compare(linked_list* A, void* info, int (*compare)(void*, void*)) {
+void* LL_search_with_another_compare(linked_list* L, void* info, int (*compare)(void*, void*)) {
+    
+    LL_node* p = NULL;
+    
+    // percorre a lista encadeada, buscando o no
+    for (p = L->head; p != NULL && ((*compare)(info, p->info) != 0); p = p->next);
+    
+    return p;
     
     return NULL;
     

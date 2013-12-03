@@ -55,7 +55,7 @@ int main(int argc, const char * argv[])
                 users_post_message(&users, &users_with_messages, &words, &compare_messages);
                 break;
                 
-            case 16: // Apagar uma mensagem
+            case 6: // Apagar uma mensagem
                 users_delete_message(&users, &users_with_messages, &words);
                 break;
                 
@@ -492,6 +492,9 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
             LL_delete(words, found_word);
             LL_insert_ordered(words, found_word);
             
+            // adiciona palavra ao tweet
+            LL_insert(&new_tweet->words, found_word);
+            
         }
         
         // se nao
@@ -502,12 +505,19 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
             LL_create(&new_word->tweets, &compare_words_by_counter);
             LL_insert(&new_word->tweets, new_tweet);
             
+            // adiciona palavra ao tweet
+            LL_insert(&new_tweet->words, new_word);
+            
+            
         }
+        
         
         // prossegue para próxima palavra
         tweet_text = strtok(NULL, tweet_text);
         i++;
     }
+    
+    LL_insert(&logged_user->tweets, new_tweet);
     
     printf("\nMensagem postada!\n");
     
@@ -537,15 +547,17 @@ void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* wor
     printf("\nMensagens de %s:\n\n", username);
     
     // percorre a lista encadeada
-    for (p = L.head; p != NULL; p = p->next) {
+    int i;
+    for (p = L.head, i = 1; p != NULL; p = p->next, i++) {
         
         tweet* a_tweet = (tweet*) p->info;
-        printf("i. %s\n", message_build_text(a_tweet));
+        string message_text = message_build_text(a_tweet);
+        printf("%d. %s\n", i, message_text);
         
     }
     
     printf("\nEntre com o número da mensagem que deseja apagar: ");
-    int message_id = get_int();
+    int message_id = get_int() - 1;
     
     tweet* deleted_message = (tweet*) LL_delete_nth_element(&logged_user->tweets, message_id);
     if (deleted_message == NULL) { printf("\nMensagem não encontrada\n"); return; }

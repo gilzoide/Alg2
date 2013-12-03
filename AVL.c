@@ -318,18 +318,38 @@ void AVL_in_order(AVL* A, void (*print_content)(void*)) {
     AVL_in_order_aux(A->root, print_content);
 }
 
+void* AVL_search_aux(node* root, void* info, int (*compare)(void*, void*)) {
+    
+    if (root == NULL)
+        return NULL;
+    
+    if ((*compare)(info, root->info) == 0)
+        return root->info;
+
+    else if ((*compare)(info, root->info) < 0)
+        root = AVL_search_aux(root->left, info, compare);
+
+    else if((*compare)(info, root->info) > 0)
+        root = AVL_search_aux(root->right, info, compare);
+    
+    return (root == NULL) ? root : root->info;
+}
+
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void* AVL_search(AVL* A, void* info) {
     
-    
-    return NULL;
+    node* root = A->root;
+    return AVL_search_aux(root, info, A->compare);
     
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*)) {
+    
+    node* root = A->root;
+    return AVL_search_aux(root, info, compare);
     
     return NULL;
     
