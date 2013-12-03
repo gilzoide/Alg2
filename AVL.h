@@ -111,4 +111,3 @@ void AVL_pre_order(AVL* A, void (*print_content)(void*));
  
  */
 void AVL_in_order(AVL* A, void (*print_content)(void*));
-

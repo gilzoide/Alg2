@@ -110,4 +110,18 @@ void* LL_delete(linked_list* L, void* info);
 
 void LL_destroy(linked_list* L, int must_free);
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Imprime o conteudo da lista encadeada
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @param print_content
+ funcao que imprime elementos na tela
+ 
+ */
+void LL_print(linked_list* L, void (*print)(void*));
+
 #endif
