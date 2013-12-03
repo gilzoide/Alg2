@@ -1,3 +1,5 @@
+/*!	@file AVL.h __TAD AVL__
+ */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *
  *  ALG1 - Trabalho 2
@@ -43,7 +45,7 @@ typedef struct {
  @param A
  ponteiro para arvore que sera criada
  
- @param int(*compare)(void*,void*)
+ @param compare
  ponteiro para a funcao de comparacao dos elementos
  
  */

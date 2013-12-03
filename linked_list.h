@@ -1,3 +1,5 @@
+/*!	@file linked_list.h __TAD Lista Encadeada__
+ */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *
  *  ALG1 - Trabalho 2
@@ -41,10 +43,10 @@ typedef struct {
  
  Cria uma lista encadeada
  
- @param A
+ @param L
  ponteiro para lista que sera criada
  
- @param int(*compare)(void*,void*)
+ @param compare
  ponteiro para a funcao de comparacao dos elementos
  
  */
@@ -55,10 +57,10 @@ void LL_create(linked_list* L, int (*compare)(void*, void*));
  
  Insere um novo elemento na lista
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param x
+ @param info
  ponteiro para o elemento que sera inserido
  
  */
@@ -69,10 +71,10 @@ int LL_insert(linked_list* L, void* info);
  
  Insere, de forma ordenada, um novo elemento na lista
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param x
+ @param info
  ponteiro para o elemento que sera inserido
  
  */
@@ -83,10 +85,10 @@ int LL_insert_ordered(linked_list* L, void* info);
  
  Retira um elemento da lista
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param x
+ @param info
  ponteiro para o elemento que sera retirado
  
  @result
@@ -100,7 +102,7 @@ void* LL_delete(linked_list* L, void* info);
  
  Destroi a lista encadeada
  
- @param A
+ @param L
  ponteiro para a lista
  
  @param must_free
@@ -115,10 +117,10 @@ void LL_destroy(linked_list* L, int must_free);
  
  Imprime o conteudo da lista encadeada
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param print_content
+ @param print
  funcao que imprime elementos na tela
  
  */
