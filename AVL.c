@@ -26,6 +26,8 @@ void AVL_create (AVL *A, int (*compare)(void*, void*)) {
     
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 // A utility function to get height of the tree
 int AVL_height(node *N) {
     if (N == NULL)
@@ -33,10 +35,14 @@ int AVL_height(node *N) {
     return N->height;
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 // A utility function to get maximum of two integers
 int max(int a, int b) {
     return (a > b)? a : b;
 }
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 /* Helper function that allocates a new node with the given key and
  NULL left and right pointers. */
@@ -50,6 +56,8 @@ node* AVL_new_node(void* info) {
     return(new_node);
     
 }
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 // A utility function to right rotate subtree rooted with y
 // See the diagram given above.
@@ -70,6 +78,8 @@ node* right_rotate(node *y) {
     return x;
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 // A utility function to left rotate subtree rooted with x
 // See the diagram given above.
 node* left_rotate(node *x) {
@@ -88,12 +98,16 @@ node* left_rotate(node *x) {
     return y;
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 // Get Balance factor of node N
 int AVL_balance(node *N) {
     if (N == NULL)
         return 0;
     return AVL_height(N->left) - AVL_height(N->right);
 }
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 node* AVL_insert_aux(node* root, void* info, int (*compare)(void*, void*)) {
     /* 1.  Perform the normal BST insertion */
@@ -146,6 +160,8 @@ void AVL_insert(AVL* A, void* info) {
     
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /* Given a non-empty binary search tree, return the node with minimum
  key value found in that tree. Note that the entire tree does not
  need to be searched. */
@@ -159,6 +175,8 @@ node * AVL_min_value_node(node* root) {
     
     return current;
 }
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 node* AVL_delete_aux(node* root, void* info, void** deleted_element, int (*compare)(void*, void*)) {
     
@@ -248,12 +266,16 @@ node* AVL_delete_aux(node* root, void* info, void** deleted_element, int (*compa
     return root;
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 void* AVL_delete(AVL* A, void* info) {
     
     void* deleted_element = NULL;
     A->root = AVL_delete_aux(A->root, info, &deleted_element, A->compare);
     return deleted_element;
 }
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void AVL_pre_order_aux(node *root, void (*print_content)(void*)) {
     
@@ -264,10 +286,14 @@ void AVL_pre_order_aux(node *root, void (*print_content)(void*)) {
     }
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 void AVL_pre_order(AVL* A, void (*print_content)(void*)) {
     
     AVL_pre_order_aux(A->root, print_content);
 }
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void AVL_in_order_aux(node *root, void (*print_content)(void*)) {
     
@@ -283,6 +309,21 @@ void AVL_in_order(AVL* A, void (*print_content)(void*)) {
     AVL_in_order_aux(A->root, print_content);
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void* AVL_search(AVL* A, void* info) {
+    
+    return NULL;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*)) {
+    
+    return NULL;
+    
+}
 
 
 

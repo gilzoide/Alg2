@@ -124,4 +124,43 @@ void LL_destroy(linked_list* L, int must_free);
  */
 void LL_print(linked_list* L, void (*print)(void*));
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Busca elemento na lista
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @param info
+ elemento que sera buscado
+ 
+ @return
+ retorna o elemento encontrado ou NULL em caso de erro
+ 
+ */
+void* LL_search(linked_list* A, void* info);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Busca elemento na lista, mas recebe uma funcao de
+ comparacao diferente da padrao, util para buscas
+ diferenciadas
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @param info
+ elemento que sera buscado
+ 
+ @param int(*compare)(void*,void*)
+ funcao que substitui o padrão de comparacao
+ 
+ @return
+ retorna o elemento encontrado ou NULL em caso de erro
+ 
+ */
+void* LL_search_with_another_compare(linked_list* A, void* info, int (*compare)(void*, void*));
+
 #endif

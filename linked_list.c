@@ -126,6 +126,21 @@ void LL_print(linked_list* L, void (*print)(void*)) {
     
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void* LL_search(linked_list* A, void* info) {
+    
+    return NULL;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void* LL_search_with_another_compare(linked_list* A, void* info, int (*compare)(void*, void*)) {
+    
+    return NULL;
+    
+}
 
 
 

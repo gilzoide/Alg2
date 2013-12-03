@@ -111,3 +111,48 @@ void AVL_pre_order(AVL* A, void (*print_content)(void*));
  
  */
 void AVL_in_order(AVL* A, void (*print_content)(void*));
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Busca elemento na AVL
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @param info
+ elemento que sera buscado
+ 
+ @return
+ retorna o elemento encontrado ou NULL em caso de erro
+ 
+ */
+void* AVL_search(AVL* A, void* info);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Busca elemento na AVL, mas recebe uma funcao de
+ comparacao diferente da padrao, util para buscas
+ diferenciadas
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @param info
+ elemento que sera buscado
+ 
+ @param int(*compare)(void*,void*)
+ funcao que substitui o padrão de comparacao
+ 
+ @return
+ retorna o elemento encontrado ou NULL em caso de erro
+ 
+ */
+void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*));
+
+
+
+
+
+
