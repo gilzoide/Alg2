@@ -277,6 +277,15 @@ void* AVL_delete(AVL* A, void* info) {
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+void* AVL_delete_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*)) {
+    
+    void* deleted_element = NULL;
+    A->root = AVL_delete_aux(A->root, info, &deleted_element, compare);
+    return deleted_element;
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 void AVL_pre_order_aux(node *root, void (*print_content)(void*)) {
     
     if(root != NULL) {

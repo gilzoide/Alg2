@@ -11,9 +11,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <stdio.h>
-#include "AVL.h"
-#include "linked_list.h"
+#include "main.h"
 
 void print_int(void* x) {
     printf("%d ", *((int*)x));
@@ -26,83 +24,96 @@ int compare_int(void* a, void* b) {
 int main(int argc, const char * argv[])
 {
     
-    AVL integers;
-    AVL_create(&integers, &compare_int);
-    
-    int a = 2, b = 3, c =8, d = 20, e = 7;
-    
-    printf(" - - - - - AVL - - - - - \n\n");
-    
-    AVL_insert(&integers, &a);
-    AVL_insert(&integers, &b);
-    AVL_insert(&integers, &c);
-    AVL_insert(&integers, &d);
-    
-    AVL_in_order(&integers, &print_int);
-    
-    printf("\n\nApaga o 2");
-    AVL_delete(&integers, &a);
-    
-    printf("\n");
-    AVL_in_order(&integers, &print_int);
-    
-    printf("\n\nTenta apagar o 2 denovo");
-    AVL_delete(&integers, &a);
-    
-    printf("\n");
-    AVL_in_order(&integers, &print_int);
-    
-    printf("\n\nInsere o 7");
-    AVL_insert(&integers, &e);
-    
-    printf("\n");
-    AVL_in_order(&integers, &print_int);
-    
-    printf("\n\nApaga o 8");
-    AVL_delete(&integers, &c);
-    
-    printf("\n");
-    AVL_in_order(&integers, &print_int);
-    
-    printf("\n\n - - - - - Lista Encadeada - - - - - \n\n");
-    
-    linked_list list;
-    LL_create(&list, &compare_int);
-    
-    LL_insert_ordered(&list, &b);
-    LL_insert_ordered(&list, &a);
-    LL_insert_ordered(&list, &c);
-    LL_insert_ordered(&list, &d);
-    
-    LL_print(&list, print_int);
-    
-    printf("\n\nApaga o 2");
-    LL_delete(&list, &a);
-    
-    printf("\n");
-    LL_print(&list, &print_int);
-    
-    printf("\n\nTenta apagar o 2 denovo");
-    LL_delete(&list, &a);
-    
-    printf("\n");
-    LL_print(&list, &print_int);
-    
-    printf("\n\nInsere o 7");
-    LL_insert(&list, &e);
-    
-    printf("\n");
-    LL_print(&list, &print_int);
-    
-    printf("\n\nApaga o 8");
-    LL_delete(&list, &c);
-    
-    printf("\n");
-    LL_print(&list, &print_int);
-    
-    printf("\n");
-    
     return 0;
     
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+string get_string(void) {
+    
+    // growable buffer for chars
+    string buffer = NULL;
+    
+    // capacity of buffer
+    unsigned int capacity = 0;
+    
+    // number of chars actually in buffer
+    unsigned int n = 0;
+    
+    // character read or EOF
+    int c;
+    
+    // iteratively get chars from standard input
+    while ((c = fgetc(stdin)) != '\n' && c != EOF) {
+        // grow buffer if necessary
+        if (n + 1 > capacity) {
+            // determine new capacity: start at 32 then double
+            if (capacity == 0)
+                capacity = 32;
+            else if (capacity <= (UINT_MAX / 2))
+                capacity *= 2;
+            else {
+                free(buffer);
+                return NULL;
+            }
+            
+            // extend buffer's capacity
+            string temp = realloc(buffer, capacity * sizeof(char));
+            if (temp == NULL) {
+                free(buffer);
+                return NULL;
+            }
+            buffer = temp;
+        }
+        
+        // append current character to buffer
+        buffer[n++] = c;
+    }
+    
+    // return NULL if user provided no input
+    if (n == 0 && c == EOF)
+        return NULL;
+    
+    // minimize buffer
+    string minimal = malloc((n + 1) * sizeof(char));
+    strncpy(minimal, buffer, n);
+    free(buffer);
+    
+    // terminate string
+    minimal[n] = '\0';
+    
+    // return string
+    return minimal;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int get_int(void) {
+    
+    // try to get an int from user
+    while (1) {
+        
+        // get line of text, returning INT_MAX on failure
+        string line = get_string();
+        
+        if (line == NULL)
+            return INT_MAX;
+        
+        // return an int if only an int (possibly with
+        // leading and/or trailing whitespace) was provided
+        int n; char c;
+        
+        if (sscanf(line, " %d %c", &n, &c) == 1) {
+            free(line);
+            return n;
+        }
+        
+        else {
+            free(line);
+            printf("Retry: ");
+        }
+    }
+    
+}

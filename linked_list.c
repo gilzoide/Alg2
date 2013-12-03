@@ -96,6 +96,34 @@ void* LL_delete(linked_list* L, void* info) {
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+void* LL_delete_with_another_compare(linked_list* L, void* info, int (*compare)(void*, void*)) {
+    
+    LL_node** p = NULL;
+    
+    // percorre a lista encadeada, buscando o no
+    for (p = &(L->head); (*p != NULL) && ((*compare)(info, (*p)->info) != 0); p = &(*p)->next);
+    
+    // verifica se foi encontrado
+    if (*p != NULL) {
+        
+        // salva a informacao para o retorno
+        void* deleted_info = (*p)->info;
+        
+        // apaga o no
+        LL_node* tmp = *p;
+        *p = (*p)->next;
+        free(tmp);
+        
+        return deleted_info;
+    }
+    
+    else
+        return NULL;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 void LL_destroy(linked_list* L, int must_free) {
     
     LL_node* p = L->head;

@@ -71,7 +71,7 @@ void AVL_insert (AVL *A, void* x);
  @param A
  ponteiro para a arvore AVL
  
- @param x
+ @param info
  ponteiro para o elemento que sera retirado
  
  @result
@@ -79,6 +79,28 @@ void AVL_insert (AVL *A, void* x);
  
  */
 void* AVL_delete (AVL* A, void* x);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Retira um elemento da AVL, mas recebe uma funcao de
+ comparacao diferente da padrao, util para buscas
+ diferenciadas
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @param info
+ ponteiro para o elemento que sera retirado
+ 
+ @param int(*compare)(void*,void*)
+ funcao que substitui o padrão de comparacao
+ 
+ @result
+ retorna o elemento retirado, ou NULL em caso de erro
+ 
+ */
+void* AVL_delete_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!

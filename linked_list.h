@@ -86,7 +86,7 @@ int LL_insert_ordered(linked_list* L, void* info);
  @param A
  ponteiro para a lista
  
- @param x
+ @param info
  ponteiro para o elemento que sera retirado
  
  @result
@@ -94,6 +94,28 @@ int LL_insert_ordered(linked_list* L, void* info);
  
  */
 void* LL_delete(linked_list* L, void* info);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Retira um elemento da lista, mas recebe uma funcao de
+ comparacao diferente da padrao, util para buscas
+ diferenciadas
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @param info
+ ponteiro para o elemento que sera retirado
+ 
+ @param int(*compare)(void*,void*)
+ funcao que substitui o padrão de comparacao
+ 
+ @result
+ retorna o elemento retirado, ou NULL em caso de erro
+ 
+ */
+void* LL_delete_with_another_compare(linked_list* L, void* info, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 /*!
