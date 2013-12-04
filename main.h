@@ -1,3 +1,33 @@
+/*! @page main Projeto
+ * @section description Descrição
+ * Sistema de microblog usando árvores binárias de busca balanceadas (AVLs).
+ *
+ * @subsection sistema Como funciona
+ * Usuários se cadastram no sistema, e assim podem postar mensagens, as quais são armazenadas no sistema.
+ * As mensagens são curtas, limitadas a 10 palavras, no máximo.
+ * Um usuário pode postar quantas mensagens quiser e, quando achar conveniente, apagar uma dessas mensagens.
+ * Pode-se também, a qualquer momento, procurar em todas as mensagens por palavras-chave utilizadas.
+ * Para mais funcionalidades, veja @ref funcionalidades.
+ *
+ * @subsection funcionalidades Funcionalidades
+ * 1. Inicializar/reinicializar cadastro
+ * 2. Cadastrar usuário
+ * 3. Apagar cadastro
+ * 4. Inicializar/reinicializar mensagens
+ * 5. Postar uma mensagem
+ * 6. Apagar uma mensagem
+ * 7. Listar cadastros (ordem alfabética)
+ * 8. Listar cadastros (ordem de cadastro)
+ * 9. Listar usuários que postaram mensagens (ordem alfabética)
+ * 10. Mostrar número de usuários que postaram mensagens
+ * 11. Mostrar número de mensagens
+ * 12. Buscar mensagem por palavra-chave
+ * 13. Mostrar 3 palavras-chave mais usadas
+ * 14. Mostrar usuário mais utilizado
+ * 15. Encerrar o sistema
+ *
+ */
+
 //
 //  main.h
 //  ALGI
