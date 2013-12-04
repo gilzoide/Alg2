@@ -1,6 +1,6 @@
 /*! @page main Projeto
  * @section description Descrição
- * Sistema de microblog usando árvores binárias de busca balanceadas (AVLs).
+ * Sistema de microblog usando árvores binárias de busca balanceadas (@ref AVL).
  *
  * @subsection sistema Como funciona
  * Usuários se cadastram no sistema, e assim podem postar mensagens, as quais são armazenadas no sistema.
@@ -10,31 +10,38 @@
  * Para mais funcionalidades, veja @ref funcionalidades.
  *
  * @subsection funcionalidades Funcionalidades
- * 1. Inicializar/reinicializar cadastro
- * 2. Cadastrar usuário
- * 3. Apagar cadastro
- * 4. Inicializar/reinicializar mensagens
- * 5. Postar uma mensagem
- * 6. Apagar uma mensagem
- * 7. Listar cadastros (ordem alfabética)
- * 8. Listar cadastros (ordem de cadastro)
- * 9. Listar usuários que postaram mensagens (ordem alfabética)
- * 10. Mostrar número de usuários que postaram mensagens
- * 11. Mostrar número de mensagens
- * 12. Buscar mensagem por palavra-chave
- * 13. Mostrar 3 palavras-chave mais usadas
- * 14. Mostrar usuário mais utilizado
- * 15. Encerrar o sistema
+ * 1. Inicializar/reinicializar cadastro (@ref users_create)
+ * 2. Cadastrar usuário	(@ref user_add)
+ * 3. Apagar cadastro (@ref user_delete)
+ * 4. Inicializar/reinicializar mensagens (@ref users_with_messages_create)
+ * 5. Postar uma mensagem (@ref users_post_message)
+ * 6. Apagar uma mensagem (@ref users_delete_message)
+ * 7. Listar cadastros (ordem alfabética) (@ref users_list_by_name)
+ * 8. Listar cadastros (ordem de cadastro) (@ref users_list_by_entry)
+ * 9. Listar usuários que postaram mensagens (ordem alfabética)	(@ref users_with_messages_list_by_name)
+ * 10. Mostrar número de usuários que postaram mensagens (@ref users_with_messages_count)
+ * 11. Mostrar número de mensagens (@ref users_with_messages_count_messages)
+ * 12. Buscar mensagem por palavra-chave (@ref words_find_messages)
+ * 13. Mostrar 3 palavras-chave mais usadas (@ref words_show_keywords)
+ * 14. Mostrar usuário mais utilizado (@ref users_updated_user)
+ * 15. Encerrar o sistema										
  *
  */
+/*! @file main.h __Header pra main__
+ */
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ *  ALG1 - Trabalho 2
+ *  AVL.h
+ *
+ *  Gil Barbosa Reis                    Nº8532248
+ *  gil.reis@usp.br
+ *
+ *  Leonardo Sampaio Ferraz Ribeiro     Nº8532300
+ *  leonardo.sampaio.ribeiro@usp.br
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//
-//  main.h
-//  ALGI
-//
-//  Created by Léo Sampaio on 03/12/13.
-//  Copyright (c) 2013 Léo Sampaio. All rights reserved.
-//
 
 #ifndef ALGI_main_h
 #define ALGI_main_h
@@ -48,30 +55,45 @@
 
 typedef char* string;
 
+/*!
+ * Cadastro de Usuário
+ */
 typedef struct {
     
-    string name;
-    linked_list tweets;
+    string name;	/*!< Nome do usuário */
+    linked_list tweets;	/*!< Lista encadeada de mensagens */
     
 } user;
 
+/*!
+ * Mensagem limitada a 10 palavras
+ */
 typedef struct {
     
-    linked_list words;
-    user* user_who_posted;
+    linked_list words;	/*!< Lista encadeada das 10 palavras do tweet */
+    user* user_who_posted;	/*!< Ponteiro pro usuário que postou o tweet */
     
 } tweet;
 
+/*!
+ * Palavras dos tweets
+ */
 typedef struct {
     
-    string text;
-    linked_list tweets;
-    int counter;
+    string text;	/*!< Palavra */
+    linked_list tweets;	/*!< Lista encadeada dos tweets em que tal palavra aparece */
+    int counter;	/*!< Contador de quantas vezes essa palavra aparece em tweets */
     
 } word;
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Função que pega uma _string_ do usuário; deve ser liberada a memória manualmente com _free_
+ *
+ * @return
+ * _string_ de entrada do usuário
+ */
 string get_string(void);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
@@ -112,10 +134,36 @@ void show_menu();
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Inicializa a AVL e lista de usuários
+ *
+ * @param users
+ * AVL de usuários
+ *
+ * @param users_list
+ * Lista dos usuários (em ordem de cadastro)
+ *
+ * @param compare
+ * Função de comparação entre usuários
+ * 
+ */
 void users_create(AVL* users, linked_list* users_list, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Adiciona usuário na AVL de usuários
+ *
+ * @param users
+ * AVL de usuários
+ *
+ * @param users_list
+ * Lista dos usuários (em ordem de cadastro)
+ *
+ * @param compare_tweets
+ * Função de comparação de mensagens
+ * 
+ */
 void user_add(AVL* users, linked_list* users_list, int (*compare_tweets)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /

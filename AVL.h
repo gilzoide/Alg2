@@ -19,10 +19,10 @@
  */
 typedef struct node {
 	
-    void* info;                     /*!< elemento que sera guardado na AVL, void para suportar polimorfismo */
-	char balance_factor;            /*!< fator de balanceamento: altura esquerda - altura direita */
-    int height;
-	struct node *left, *right;      /*!< encadeamento esquerda e direita */
+    void* info;             /*!< elemento que sera guardado na AVL, _void_ para suportar polimorfismo */
+    int height;				/*!< Altura do nó */
+	struct node *left;		/*!< Filho esquerdo */
+	struct node *right;     /*!< Filho direito direita */
     
 } node;
 
@@ -38,20 +38,21 @@ typedef struct {
 
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
- 
- Cria uma arvore AVL
- 
- @param A
- ponteiro para arvore que sera criada
- 
- @param compare
- ponteiro para a funcao de comparacao dos elementos
- 
+ * Cria uma arvore AVL
+ *
+ * @param A
+ * ponteiro para arvore que sera criada
+ *
+ * @param compare
+ * ponteiro para a funcao de comparacao dos elementos
+ *
  */
 void AVL_create (AVL *A, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Insere um novo elemento na AVL
@@ -66,6 +67,7 @@ void AVL_create (AVL *A, int (*compare)(void*, void*));
 void AVL_insert (AVL *A, void* x);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Retira um elemento da AVL
@@ -83,6 +85,7 @@ void AVL_insert (AVL *A, void* x);
 void* AVL_delete (AVL* A, void* x);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Retira um elemento da AVL, mas recebe uma funcao de
@@ -105,6 +108,7 @@ void* AVL_delete (AVL* A, void* x);
 void* AVL_delete_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Imprime o conteudo de uma AVL em pre-ordem 
@@ -121,6 +125,7 @@ void* AVL_delete_with_another_compare(AVL* A, void* info, int (*compare)(void*, 
 void AVL_pre_order(AVL* A, void (*print_content)(void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Imprime o conteudo de uma AVL em ordem
@@ -137,6 +142,7 @@ void AVL_pre_order(AVL* A, void (*print_content)(void*));
 void AVL_in_order(AVL* A, void (*print_content)(void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Busca elemento na AVL
@@ -154,6 +160,7 @@ void AVL_in_order(AVL* A, void (*print_content)(void*));
 void* AVL_search(AVL* A, void* info);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Busca elemento na AVL, mas recebe uma funcao de
@@ -176,6 +183,7 @@ void* AVL_search(AVL* A, void* info);
 void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Conta a quantidade de elementos na AVL
@@ -190,6 +198,7 @@ void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, 
 int AVL_count(AVL* A);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 /*!
  
  Conta a quantidade de elementos na AVL aplicando uma
