@@ -1,3 +1,5 @@
+/*! @file AVL.h __TAD AVL_
+ */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *
  *  ALG1 - Trabalho 2
@@ -43,7 +45,7 @@ typedef struct {
  @param A
  ponteiro para arvore que sera criada
  
- @param int(*compare)(void*,void*)
+ @param compare
  ponteiro para a funcao de comparacao dos elementos
  
  */
@@ -71,7 +73,7 @@ void AVL_insert (AVL *A, void* x);
  @param A
  ponteiro para a arvore AVL
  
- @param info
+ @param x
  ponteiro para o elemento que sera retirado
  
  @result
@@ -93,7 +95,7 @@ void* AVL_delete (AVL* A, void* x);
  @param info
  ponteiro para o elemento que sera retirado
  
- @param int(*compare)(void*,void*)
+ @param compare
  funcao que substitui o padrão de comparacao
  
  @result
@@ -164,7 +166,7 @@ void* AVL_search(AVL* A, void* info);
  @param info
  elemento que sera buscado
  
- @param int(*compare)(void*,void*)
+ @param compare
  funcao que substitui o padrão de comparacao
  
  @return
@@ -196,7 +198,7 @@ int AVL_count(AVL* A);
  @param A
  ponteiro para a arvore AVL
  
- @param int(*counter)(void*)
+ @param counter
  função que define o peso de um elemento
  
  @return

@@ -1,3 +1,5 @@
+/*! @file linked_list.h __TAD Lista Encadeada__
+ */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *
  *  ALG1 - Trabalho 2
@@ -41,10 +43,10 @@ typedef struct {
  
  Cria uma lista encadeada
  
- @param A
+ @param L
  ponteiro para lista que sera criada
  
- @param int(*compare)(void*,void*)
+ @param compare
  ponteiro para a funcao de comparacao dos elementos
  
  */
@@ -55,10 +57,10 @@ void LL_create(linked_list* L, int (*compare)(void*, void*));
  
  Insere um novo elemento na lista
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param x
+ @param info
  ponteiro para o elemento que sera inserido
  
  */
@@ -69,10 +71,10 @@ int LL_insert(linked_list* L, void* info);
  
  Insere, de forma ordenada, um novo elemento na lista
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param x
+ @param info
  ponteiro para o elemento que sera inserido
  
  */
@@ -83,7 +85,7 @@ int LL_insert_ordered(linked_list* L, void* info);
  
  Retira um elemento da lista
  
- @param A
+ @param L
  ponteiro para a lista
  
  @param info
@@ -100,7 +102,7 @@ void* LL_delete(linked_list* L, void* info);
  
  Retira o enésimo elemento da lista
  
- @param A
+ @param L
  ponteiro para a lista
  
  @param n
@@ -119,13 +121,13 @@ void* LL_delete_nth_element(linked_list* L, int n);
  comparacao diferente da padrao, util para buscas
  diferenciadas
  
- @param A
+ @param L
  ponteiro para a lista
  
  @param info
  ponteiro para o elemento que sera retirado
  
- @param int(*compare)(void*,void*)
+ @param compare
  funcao que substitui o padrão de comparacao
  
  @result
@@ -139,7 +141,7 @@ void* LL_delete_with_another_compare(linked_list* L, void* info, int (*compare)(
  
  Destroi a lista encadeada
  
- @param A
+ @param L
  ponteiro para a lista
  
  */
@@ -152,10 +154,10 @@ void LL_destroy(linked_list* L);
  Destroi a lista encadeada, aplicando uma função, 
  passada como parâmetro, em cada elemento apagado
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param void(*destroy_elem)(void*)
+ @param destroy_elem
  função que será aplicada nos elementos
  
  */
@@ -167,10 +169,10 @@ void LL_destroy_with_function(linked_list* L, void (*destroy_elem)(void*));
  
  Imprime o conteudo da lista encadeada
  
- @param A
+ @param L
  ponteiro para a lista
  
- @param print_content
+ @param print
  funcao que imprime elementos na tela
  
  */
@@ -181,7 +183,7 @@ void LL_print(linked_list* L, void (*print)(void*));
  
  Busca elemento na lista
  
- @param A
+ @param L
  ponteiro para a lista
  
  @param info
@@ -200,13 +202,13 @@ void* LL_search(linked_list* L, void* info);
  comparacao diferente da padrao, util para buscas
  diferenciadas
  
- @param A
+ @param L
  ponteiro para a lista
  
  @param info
  elemento que sera buscado
  
- @param int(*compare)(void*,void*)
+ @param compare
  funcao que substitui o padrão de comparacao
  
  @return
@@ -220,7 +222,7 @@ void* LL_search_with_another_compare(linked_list* L, void* info, int (*compare)(
  
  Conta a quantidade de elementos na lista
  
- @param A
+ @param L
  ponteiro para a lista
  
  @return
