@@ -439,7 +439,7 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
     }
     
     // checa se o usuario esta na avl de usuarios que postaram mensagens
-    user* is_on_users_with_messages = (user*) AVL_search(users_with_messages, logged_user);
+    user* is_on_users_with_messages = (user*) AVL_search_with_another_compare(users_with_messages, username, &compare_users_by_name);
     
     // se nao estiver, o insere
     if (is_on_users_with_messages == NULL) {
@@ -717,8 +717,90 @@ void words_show_keywords(linked_list* words) {
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+typedef struct {
+    string name;
+    int counter;
+} user_with_counter;
+
+int compare_users_by_counter(void* a, void* b) {
+    
+    user_with_counter* first_user = (user_with_counter*) a;
+    user_with_counter* second_user = (user_with_counter*) b;
+    
+    return first_user->counter - second_user->counter;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
 void users_updated_user(AVL* users_with_messages, linked_list* words) {
     
+    typedef struct {
+        string name;
+        int counter;
+    } user_with_counter;
     
+    linked_list list_of_users;
+    LL_create(&list_of_users, &compare_users_by_counter);
+    
+    word** keywords = NULL;
+    
+    int i = 0, tie = 0, counter = 0; int last_word = 0;
+    while (i < 3 || tie == 1) {
+        
+        word* a_word = LL_delete_nth_element(words, 0);
+        
+        if (a_word == NULL)
+            break;
+        
+        counter++;
+        i++;
+        keywords = (word**) realloc(keywords, counter*sizeof(word*));
+        
+        keywords[counter-1] = a_word;
+        
+        if (a_word->counter == last_word)
+            tie = 1;
+        else
+            tie = 0;
+        
+        last_word = a_word->counter;
+        
+    }
+
+    for (i = 0; i < counter; i++) {
+        
+        // percorre a lista encadeada de tweets
+        linked_list L = keywords[i]->tweets; LL_node* p;
+        for (p = L.head; p != NULL; p = p->next) {
+            
+            tweet* a_tweet = (tweet*) p->info;
+            user* a_user = a_tweet->user_who_posted;
+            
+            // procura usuario na lista nova
+            user_with_counter* user_counter_found = (user_with_counter*) LL_search_with_another_compare(&list_of_users, a_user->name, compare_users_by_name);
+            
+            // ja esta na lista
+            if (user_counter_found != NULL) {
+                user_counter_found->counter++;
+                LL_delete(&list_of_users, user_counter_found);
+                LL_insert_ordered(&list_of_users, user_counter_found);
+            }
+            
+            // ainda nao esta na lista
+            else {
+                
+                user_with_counter* new_user_with_counter = (user_with_counter*) malloc(sizeof(user_with_counter));
+                new_user_with_counter->name = a_user->name;
+                new_user_with_counter->counter = 1;
+                LL_insert(&list_of_users, new_user_with_counter);
+            }
+        }
+    }
+    
+    user_with_counter* awesome_user = (user_with_counter*) LL_delete_nth_element(&list_of_users, 0);
+    printf("\nUsuário mais atualizado: %s\n", awesome_user->name);
+    
+    LL_destroy_with_function(&list_of_users, &free);
     
 }
