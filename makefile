@@ -29,7 +29,7 @@ all : $(objs)
 	cc $(objs) -o main $(CFLAGS)
 
 
-main.o : main.c AVL.h
+main.o : main.c AVL.o linked_list.o
 	cc -c main.c $(CFLAGS)
 
 AVL.o : AVL.c AVL.h
@@ -42,9 +42,6 @@ linked_list.o : linked_list.c linked_list.h
 
 run : main.o
 		@./main
-
-commit :
-		@git commit -a && git push
 
 zip :
 		@zip alg1 $(source) makefile
