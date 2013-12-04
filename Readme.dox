@@ -1,0 +1,31 @@
+/*! @mainpage Trabalho de Algoritmos e Estruturas de Dados 1
+ * @authors Gil Barbosa Reis - Nº8532248
+ * @authors Leonardo Sampaio Ferraz Ribeiro - Nº8532300
+ *
+ * @section description Descrição
+ * Sistema de microblog usando árvores binárias de busca balanceadas (@ref AVL) e listas encadeadas (@ref linked_list).
+ *
+ * @subsection sistema Como funciona
+ * Usuários se cadastram no sistema, e assim podem postar mensagens, as quais são armazenadas no sistema.
+ * As mensagens são curtas, limitadas a 10 palavras, no máximo.
+ * Um usuário pode postar quantas mensagens quiser e, quando achar conveniente, apagar uma dessas mensagens.
+ * Pode-se também, a qualquer momento, procurar em todas as mensagens por palavras-chave utilizadas.
+ *
+ * @subsection funcionalidades Funcionalidades
+ * 1. Inicializar/reinicializar cadastro (@ref users_create)
+ * 2. Cadastrar usuário	(@ref user_add)
+ * 3. Apagar cadastro (@ref user_delete)
+ * 4. Inicializar/reinicializar mensagens (@ref users_with_messages_create)
+ * 5. Postar uma mensagem (@ref users_post_message)
+ * 6. Apagar uma mensagem (@ref users_delete_message)
+ * 7. Listar cadastros (ordem alfabética) (@ref users_list_by_name)
+ * 8. Listar cadastros (ordem de cadastro) (@ref users_list_by_entry)
+ * 9. Listar usuários que postaram mensagens (ordem alfabética)	(@ref users_with_messages_list_by_name)
+ * 10. Mostrar número de usuários que postaram mensagens (@ref users_with_messages_count)
+ * 11. Mostrar número de mensagens (@ref users_with_messages_count_messages)
+ * 12. Buscar mensagem por palavra-chave (@ref words_find_messages)
+ * 13. Mostrar 3 palavras-chave mais usadas (@ref words_show_keywords)
+ * 14. Mostrar usuário mais utilizado (@ref users_updated_user)
+ * 15. Encerrar o sistema										
+ *
+ */

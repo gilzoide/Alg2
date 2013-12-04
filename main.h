@@ -1,32 +1,3 @@
-/*! @page main Projeto
- * @section description Descrição
- * Sistema de microblog usando árvores binárias de busca balanceadas (@ref AVL).
- *
- * @subsection sistema Como funciona
- * Usuários se cadastram no sistema, e assim podem postar mensagens, as quais são armazenadas no sistema.
- * As mensagens são curtas, limitadas a 10 palavras, no máximo.
- * Um usuário pode postar quantas mensagens quiser e, quando achar conveniente, apagar uma dessas mensagens.
- * Pode-se também, a qualquer momento, procurar em todas as mensagens por palavras-chave utilizadas.
- * Para mais funcionalidades, veja @ref funcionalidades.
- *
- * @subsection funcionalidades Funcionalidades
- * 1. Inicializar/reinicializar cadastro (@ref users_create)
- * 2. Cadastrar usuário	(@ref user_add)
- * 3. Apagar cadastro (@ref user_delete)
- * 4. Inicializar/reinicializar mensagens (@ref users_with_messages_create)
- * 5. Postar uma mensagem (@ref users_post_message)
- * 6. Apagar uma mensagem (@ref users_delete_message)
- * 7. Listar cadastros (ordem alfabética) (@ref users_list_by_name)
- * 8. Listar cadastros (ordem de cadastro) (@ref users_list_by_entry)
- * 9. Listar usuários que postaram mensagens (ordem alfabética)	(@ref users_with_messages_list_by_name)
- * 10. Mostrar número de usuários que postaram mensagens (@ref users_with_messages_count)
- * 11. Mostrar número de mensagens (@ref users_with_messages_count_messages)
- * 12. Buscar mensagem por palavra-chave (@ref words_find_messages)
- * 13. Mostrar 3 palavras-chave mais usadas (@ref words_show_keywords)
- * 14. Mostrar usuário mais utilizado (@ref users_updated_user)
- * 15. Encerrar o sistema										
- *
- */
 /*! @file main.h __Header pra main__
  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -89,50 +60,146 @@ typedef struct {
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 /*!
- * Função que pega uma _string_ do usuário; deve ser liberada a memória manualmente com _free_
+ * Função que pega uma _string_ do usuário.
+ * 
+ * @warning Memória deve ser liberada manualmente com `free()`
  *
  * @return
- * _string_ de entrada do usuário
+ * _string_ digitada
  */
 string get_string(void);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Função que pega um _int_ do usuário
+ * 
+ * @note @ref get_int filtra a entrada, de forma que só números inteiros sejam aceitos
+ * 
+ * @return
+ * Inteiro digitado
+ */
 int get_int(void);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-int compare_users(void*, void*);
+/*!
+ * Função que compara dois usuários
+ * 
+ * @param a
+ * Cadastro A
+ * 
+ * @param b
+ * Cadastro B
+ * 
+ * @return
+ * Retorna 0 se nomes dos usuários forem iguais
+ */
+int compare_users(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-int compare_users_by_name(void*, void*);
+/*!
+ * Função que compara nome de usuário com string
+ * 
+ * @param a
+ * Cadastro
+ * 
+ * @param b
+ * _string_ com o nome
+ * 
+ * @return
+ * Retorna 0 se cadastro tiver o nome dado
+ */
+int compare_users_by_name(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Reconstitui mensagem a partir de um tweet
+ * 
+ * @param the_tweet
+ * tweet a ser reconstruído
+ * 
+ * @return
+ * _string_ correspondente
+ */
 string message_build_text(tweet* the_tweet);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-int compare_messages(void*, void*);
+/*!
+ * Função que compara duas mensagens
+ * 
+ * @param a
+ * Mensagem A
+ * 
+ * @param b
+ * Mensagem B
+ * 
+ * @return
+ * Retorna 0 caso mensagens sejam iguais
+ */
+int compare_messages(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-int compare_messages_by_text(void*, void*);
+/*!
+ * Função que compara mensagem com uma string
+ * 
+ * @param a
+ * Mensagem
+ * 
+ * @param b
+ * _string_ a ser comparada
+ * 
+ * @return
+ * Retorna 0 caso mensagens sejam iguais
+ */
+int compare_messages_by_text(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Função que compara uma _string_ com uma palavra (@ref word)
+ * 
+ * @param a
+ * _string_ a ser comparada
+ * 
+ * @param b
+ * Palavra
+ * 
+ * @return
+ * Retorna 0 caso mensagens sejam iguais
+ */
 int compare_words_by_text(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Função que compara a contagem de duas palavras (@ref word::counter)
+ * 
+ * @param a
+ * Palavra A
+ * 
+ * @param b
+ * Palavra B
+ * 
+ * @return
+ * Retorna 0 caso palavras tenham mesmo contador
+ */
 int compare_words_by_counter(void* a, void* b);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Mostra menu de opções de  @ref funcionalidades para o usuário
+ */
 void show_menu();
 
-// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+
+// Funções usadas no 'switch' das opções / / / / / / / /
 
 /*!
  * Inicializa a AVL e lista de usuários
@@ -152,7 +219,7 @@ void users_create(AVL* users, linked_list* users_list, int (*compare)(void*, voi
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 /*!
- * Adiciona usuário na AVL de usuários
+ * Adiciona cadastro na AVL de usuários
  *
  * @param users
  * AVL de usuários
@@ -162,24 +229,56 @@ void users_create(AVL* users, linked_list* users_list, int (*compare)(void*, voi
  *
  * @param compare_tweets
  * Função de comparação de mensagens
- * 
  */
 void user_add(AVL* users, linked_list* users_list, int (*compare_tweets)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Apaga cadastro da AVL de usuários
+ * 
+ * @param users
+ * AVL de usuários
+ * 
+ * @param users_with_messages
+ * AVL de usuários com mensagens
+ * 
+ * @param users_list
+ * Lista dos usuários (em ordem de cadastro)
+ */
 void user_delete(AVL* users, AVL* users_with_messages, linked_list* users_list);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Apaga uma mensagem, liberando a memória alocada
+ * 
+ * @param message
+ * tweet a ser apagado
+ */
 void message_destroy(void* message);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Cria a AVL de mensagens
+ * 
+ * @param users_with_messages
+ * AVL a ser criada
+ * 
+ * @param words
+ * Lista encadeada de palavras a ser criada
+ * 
+ * @param compare
+ * Função de comparação de cadastros
+ */
 void users_with_messages_create(AVL* users_with_messages, linked_list* words, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * 
+ */
 void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
