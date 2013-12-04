@@ -25,12 +25,12 @@ CFLAGS = -g -O2 -march=native
 
 
 
-all : source
+all : $(objs)
 	cc $(objs) -o main $(CFLAGS)
 
 
 main.o : main.c AVL.h
-	cc -c main,c $(CFLAGS)
+	cc -c main.c $(CFLAGS)
 
 AVL.o : AVL.c AVL.h
 	cc -c AVL.c $(CFLAGS)
