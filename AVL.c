@@ -324,7 +324,7 @@ void* AVL_search_aux(node* root, void* info, int (*compare)(void*, void*)) {
         return NULL;
     
     if ((*compare)(info, root->info) == 0)
-        return root->info;
+        return root;
 
     else if ((*compare)(info, root->info) < 0)
         root = AVL_search_aux(root->left, info, compare);
@@ -332,7 +332,7 @@ void* AVL_search_aux(node* root, void* info, int (*compare)(void*, void*)) {
     else if((*compare)(info, root->info) > 0)
         root = AVL_search_aux(root->right, info, compare);
     
-    return (root == NULL) ? root : root->info;
+    return root;
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
@@ -340,7 +340,8 @@ void* AVL_search_aux(node* root, void* info, int (*compare)(void*, void*)) {
 void* AVL_search(AVL* A, void* info) {
     
     node* root = A->root;
-    return AVL_search_aux(root, info, A->compare);
+    node* result = (node*) AVL_search_aux(root, info, A->compare);
+    return (result == NULL) ? NULL : result->info;
     
 }
 
@@ -349,9 +350,9 @@ void* AVL_search(AVL* A, void* info) {
 void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*)) {
     
     node* root = A->root;
-    return AVL_search_aux(root, info, compare);
+    node* result = (node*) AVL_search_aux(root, info, compare);
     
-    return NULL;
+    return (result == NULL) ? NULL : result->info;
     
 }
 

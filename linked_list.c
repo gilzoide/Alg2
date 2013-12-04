@@ -179,11 +179,12 @@ void LL_destroy_with_function(linked_list* L, void (*destroy_elem)(void*)) {
     while (p != NULL) {
         
         LL_node* tmp = p;
-        p = p->next;
         
         // liberando os nos (e executando a funcao auxiliar)
         (*destroy_elem)(p->info);
         free(tmp);
+        
+        p = p->next;
         
     }
     

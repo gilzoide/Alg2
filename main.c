@@ -202,7 +202,10 @@ int compare_users(void* a, void* b) {
     user* first_user = (user*) a;
     user* second_user = (user*) b;
     
-    return strcmp(first_user->name, second_user->name);
+    string first_name = first_user->name;
+    string second_name = second_user->name;
+    
+    return strcmp(first_name, second_name);
     
 }
 
@@ -560,7 +563,7 @@ void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* wor
     }
     
     printf("\nEntre com o número da mensagem que deseja apagar: ");
-    int message_id = get_int() - 1;
+    int message_id = get_int();
     
     tweet* deleted_message = (tweet*) LL_delete_nth_element(&logged_user->tweets, message_id);
     if (deleted_message == NULL) { printf("\nMensagem não encontrada\n"); return; }
