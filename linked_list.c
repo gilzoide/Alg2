@@ -47,10 +47,9 @@ int LL_insert(linked_list* L, void* info) {
 int LL_insert_ordered(linked_list* L, void* info) {
     
     LL_node** p = NULL;
-    
-    
+
     // percorre a lista encadeada, buscando o lugar do novo no
-    for (p = &(L->head); (*p != NULL) && ((*L->compare)(info, (*p)->info) > 0); p = &(*p)->next);
+    for (p = &(L->head); (*p != NULL) && ((*L->compare)(info, (*p)->info) < 0); p = &(*p)->next);
     
     LL_node* tmp = *p;
     
@@ -209,9 +208,15 @@ void* LL_search(linked_list* L, void* info) {
     LL_node* p = NULL;
     
     // percorre a lista encadeada, buscando o no
-    for (p = L->head; p != NULL && ((*L->compare)(info, p->info) != 0); p = p->next);
+    for (p = L->head; p != NULL ; p = p->next)  {
+        if ((*L->compare)(info, p->info) == 0)
+            break;
+    }
     
-    return p;
+    if (p != NULL)
+        return p->info;
+    
+    return NULL;
     
 }
 
@@ -222,11 +227,29 @@ void* LL_search_with_another_compare(linked_list* L, void* info, int (*compare)(
     LL_node* p = NULL;
     
     // percorre a lista encadeada, buscando o no
-    for (p = L->head; p != NULL && ((*compare)(info, p->info) != 0); p = p->next);
+    for (p = L->head; p != NULL; p = p->next) {
+        if ((*compare)(info, p->info) == 0)
+            break;
+    }
     
-    return p;
+    if (p != NULL)
+        return p->info;
     
     return NULL;
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int LL_count(linked_list* L) {
+    
+    LL_node* p = NULL;
+    int i;
+    
+    // percorre a lista encadeada, contando o numero de elementos
+    for (p = L->head, i = 0; p != NULL; p = p->next, i++);
+    
+    return i;
     
 }
 

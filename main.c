@@ -283,10 +283,10 @@ int compare_messages_by_text(void* a, void* b) {
 
 int compare_words_by_text(void* a, void* b) {
     
-    word* first_word = (word*) a;
+    string first_word_text = (string) a;
     word* second_word = (word*) b;
     
-    return strcmp(first_word->text, second_word->text);
+    return strcmp(first_word_text, second_word->text);
     
 }
 
@@ -474,7 +474,7 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
         new_word->text = tweet_text;
         
         // checa se palavra ja existe
-        word* found_word = (word*) LL_search_with_another_compare(words, new_word, &compare_words_by_text);
+        word* found_word = (word*) LL_search_with_another_compare(words, tweet_text, &compare_words_by_text);
         
         // se existe
         if (found_word != NULL) {
@@ -508,12 +508,15 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
             // adiciona palavra ao tweet
             LL_insert(&new_tweet->words, new_word);
             
+            // isere palavra na lista de palavras
+            LL_insert_ordered(words, new_word);
+            
             
         }
         
         
         // prossegue para próxima palavra
-        tweet_text = strtok(NULL, tweet_text);
+        tweet_text = strtok(NULL, " ");
         i++;
     }
     
@@ -617,17 +620,57 @@ void users_with_messages_list_by_name(AVL* users_with_messages) {
 
 void users_with_messages_count(AVL* users_with_messages) {
     
+    
+    int n = AVL_count(users_with_messages);
+    printf("\nNúmero de usuários que postaram mensagens: %d\n", n);
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int messages_counter(void* a_user) {
+    
+    user* the_user = (user*) a_user;
+    return LL_count(&the_user->tweets);
+    
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void users_with_messages_count_messages(AVL* users_with_messages) {
     
+    int n = AVL_count_with_function(users_with_messages, &messages_counter);
+    printf("\nNúmero de mensagens cadastradas: %d\n", n);
+    
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void word_print_messages(void* a_tweet) {
+    
+    tweet* the_tweet = (tweet*) a_tweet;
+    string tweet_text = message_build_text(the_tweet);
+    printf("%s: %s\n", the_tweet->user_who_posted->name, tweet_text);
+    
+    free(tweet_text);
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void words_find_messages(linked_list* words) {
+    
+    printf("\nDigite a palavra-chave a buscar: ");
+    char* keyword = get_string();
+    
+    word* word_found = (word*) LL_search_with_another_compare(words, keyword, &compare_words_by_text);
+    
+    if (word_found == NULL) {
+        printf("\nNão foi possível encontrar mensagens com essa palavra-chave\n");
+        return;
+    }
+    
+    else
+        LL_print(&word_found->tweets, &word_print_messages);
     
 }
 
@@ -635,10 +678,47 @@ void words_find_messages(linked_list* words) {
 
 void words_show_keywords(linked_list* words) {
     
+    printf("\nAs três palavras-chave mais mencionadas:\n");
+    
+    word** keywords = NULL;
+    
+    int i = 0, tie = 0, counter = 0; int last_word = 0;
+    while (i < 3 || tie == 1) {
+        
+        word* a_word = LL_delete_nth_element(words, 0);
+        
+        if (a_word == NULL)
+            break;
+        
+        counter++;
+        i++;
+        keywords = (word**) realloc(keywords, counter*sizeof(word*));
+        
+        keywords[counter-1] = a_word;
+        
+        if (a_word->counter == last_word)
+            tie = 1;
+        else
+            tie = 0;
+        
+        last_word = a_word->counter;
+        
+    }
+    
+    for (i = 0; i < counter; i++) {
+        
+        printf("%d. %s, mencionada %d vezes\n", i + 1, keywords[i]->text, keywords[i]->counter);
+        LL_insert_ordered(words, keywords[i]);
+        
+        
+    }
+    
 }
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void users_updated_user(AVL* users_with_messages, linked_list* words) {
+    
+    
     
 }

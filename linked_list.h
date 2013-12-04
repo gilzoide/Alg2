@@ -215,4 +215,18 @@ void* LL_search(linked_list* L, void* info);
  */
 void* LL_search_with_another_compare(linked_list* L, void* info, int (*compare)(void*, void*));
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Conta a quantidade de elementos na lista
+ 
+ @param A
+ ponteiro para a lista
+ 
+ @return
+ o total de elementos na lista
+ 
+ */
+int LL_count(linked_list* L);
+
 #endif

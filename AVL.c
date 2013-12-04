@@ -355,7 +355,38 @@ void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, 
     
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+int AVL_count_aux(node* root) {
+    
+    if (root == NULL)
+        return 0;
+    else
+        return AVL_count_aux(root->left) + AVL_count_aux(root->right) + 1;
+    
+}
+
+int AVL_count(AVL* A) {
+    
+    return AVL_count_aux(A->root);
+}
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+int AVL_count_with_function_aux(node* root, int (*counter)(void*)) {
+    
+    if (root == NULL)
+        return 0;
+    else
+        return AVL_count_aux(root->left) + AVL_count_aux(root->right) + (*counter)(root->info);
+    
+}
+
+int AVL_count_with_function(AVL* A, int (*counter)(void*)) {
+    
+    return AVL_count_with_function_aux(A->root, counter);
+    
+}
 
 
 

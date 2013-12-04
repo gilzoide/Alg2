@@ -173,7 +173,37 @@ void* AVL_search(AVL* A, void* info);
  */
 void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, void*));
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Conta a quantidade de elementos na AVL
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @return
+ o total de elementos na AVL
+ 
+ */
+int AVL_count(AVL* A);
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+/*!
+ 
+ Conta a quantidade de elementos na AVL aplicando uma
+ função de peso em cada elemento
+ 
+ @param A
+ ponteiro para a arvore AVL
+ 
+ @param int(*counter)(void*)
+ função que define o peso de um elemento
+ 
+ @return
+ o total de elementos na AVL de acordo com os pesos
+ 
+ */
+int AVL_count_with_function(AVL* A, int (*counter)(void*));
 
 
 
