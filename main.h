@@ -1,4 +1,6 @@
-/*! @file main.h __Header pra main__
+/*! @file main.h @brief Header pra main
+ *
+ * Contém as funções usadas na main, usando das funções presentes nos TADs AVL.h e linked_list.h
  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *
@@ -261,13 +263,13 @@ void message_destroy(void* message);
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 /*!
- * Cria a AVL de mensagens
+ * Cria a AVL de mensagens vinculadas aos cadastros
  * 
  * @param users_with_messages
  * AVL a ser criada
  * 
  * @param words
- * Lista encadeada de palavras a ser criada
+ * Lista de palavras a ser criada
  * 
  * @param compare
  * Função de comparação de cadastros
@@ -277,44 +279,119 @@ void users_with_messages_create(AVL* users_with_messages, linked_list* words, in
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 /*!
+ * Posta mensagem, adicionando novas palavras à lista e atualizando suas contagens  
  * 
+ * @param users
+ * AVL de cadastros
+ * 
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ * 
+ * @param words
+ * Lista de palavras existentes
+ * 
+ * @param compare
+ * Função de comparação de tweets
  */
 void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words, int (*compare)(void*, void*));
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Apaga uma mensagem postada, retirando palavras que não mais existem e atualizando suas contagens
+ * 
+ * @param users
+ * AVL de cadastros
+ * 
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ * 
+ * @param words
+ * Lista de palavras existentes
+ */
 void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* words);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime os nomes dos usuários cadastrados, em ordem alfabética
+ * 
+ * @param users
+ * AVL de cadastros
+ */
 void users_list_by_name(AVL* users);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime os nomes dos usuários cadastrados, em ordem de cadastro
+ * 
+ * @param users_list
+ * Lista de usuários (em ordem de cadastro)
+ */
 void users_list_by_entry(linked_list* users_list);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime os nomes dos usuários que postaram mensagens, em ordem alfabética
+ * 
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ */
 void users_with_messages_list_by_name(AVL* users_with_messages);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime o número de usuários que postaram mensagens
+ * 
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ */
 void users_with_messages_count(AVL* users_with_messages);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime o número de mensagens postadas
+ * 
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ */
 void users_with_messages_count_messages(AVL* users_with_messages);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Busca mensagens a partir de uma ou mais palavras-chave
+ * 
+ * @param words
+ * Lista de palavras existentes
+ */
 void words_find_messages(linked_list* words);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime as três palavras-chave mais usadas
+ * 
+ * @param words
+ * Lista de palavras existentes
+ */
 void words_show_keywords(linked_list* words);
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Imprime o nome do usuário mais atualizado
+ * 
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ * 
+ * @param words
+ * Lista de palavras existentes
+ */
 void users_updated_user(AVL* users_with_messages, linked_list* words);
 
 #endif

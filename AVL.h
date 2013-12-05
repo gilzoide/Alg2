@@ -1,4 +1,4 @@
-/*! @file AVL.h __TAD AVL_
+/*! @file AVL.h @brief __TAD__ _AVL_
  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *

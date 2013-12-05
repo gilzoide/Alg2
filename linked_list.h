@@ -1,4 +1,4 @@
-/*! @file linked_list.h __TAD Lista Encadeada__
+/*! @file linked_list.h @brief __TAD__ _Lista Encadeada_
  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *
