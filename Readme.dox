@@ -4,9 +4,9 @@
  *
  * @section description Descrição
  * Sistema de microblog usando árvores binárias de busca balanceadas (@ref AVL) e listas encadeadas (@ref linked_list).
+ * @sa main.h
  * @sa AVL.h
  * @sa linked_list.h
- * @sa main.h
  *
  * @subsection sistema Como funciona
  * Usuários se cadastram no sistema, e assim podem postar mensagens, as quais são armazenadas no sistema.

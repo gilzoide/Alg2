@@ -44,7 +44,7 @@ run : main.o
 		@./main
 
 zip :
-		@zip alg1 $(source) makefile
+		@zip -r alg1 $(source) makefile Doxyfile Readme.dox html
 
 clean :
 		@rm -r html main $(objs) *~ alg1.zip
