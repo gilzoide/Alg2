@@ -101,6 +101,9 @@ int main(int argc, const char * argv[])
         
     } while (option != 15);
     
+    
+    free_everything(&users, &users_with_messages, &users_list, &words);
+    
     return 0;
     
 }
@@ -328,14 +331,72 @@ void show_menu() {
     
 }
 
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void message_destroy(void* message) {
+    
+    tweet* deleted_tweet = (tweet*) message;
+    linked_list L = deleted_tweet->words;
+    LL_node* p = NULL;
+    
+    // percorre a lista encadeada
+    for (p = L.head; p != NULL; p = p->next) {
+        
+        // identifica a palavra
+        word* a_word = (word*) p->info;
+        
+        LL_delete(&a_word->tweets, message);
+        a_word->counter--;
+        
+    }
+}
+
+void destroy_user(void* a_user) {
+    
+    user* the_user = (user*) a_user;
+    
+    free(the_user->name);
+    LL_destroy_with_function(&the_user->tweets, &message_destroy);
+    
+    free(the_user);
+    
+}
+
+void destroy_word(void* a_word) {
+    
+    word* the_word  = (word*) a_word;
+    
+    free(the_word->text);
+    
+    free(the_word);
+    
+}
+
+void destroy_user_messages (void* a_user) {
+    
+    user* the_user = (user*) a_user;
+    LL_destroy_with_function(&the_user->tweets, &message_destroy);
+    LL_create(&the_user->tweets, &compare_messages);
+}
+
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void users_create(AVL* users, linked_list* users_list, int (*compare)(void*, void*)) {
     
+    if (users->root != NULL) {
+        AVL_destroy_with_function(users, &destroy_user);
+        LL_destroy(users_list);
+        printf("\nCadastro resetado!\n");
+    }
+    
+    else
+        printf("\nCadastro Inicializado!\n");
+        
+    
+    
     AVL_create(users, compare);
     LL_create(users_list, compare);
-    
-    printf("\nCadastro Inicializado!\n");
     
 }
 
@@ -395,27 +456,12 @@ void user_delete(AVL* users, AVL* users_with_messages, linked_list* users_list) 
 
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-void message_destroy(void* message) {
-    
-    tweet* deleted_tweet = (tweet*) message;
-    linked_list L = deleted_tweet->words;
-    LL_node* p = NULL;
-    
-    // percorre a lista encadeada
-    for (p = L.head; p != NULL; p = p->next) {
-        
-        // identifica a palavra
-        word* a_word = (word*) p->info;
-        
-        LL_delete(&a_word->tweets, message);
-        a_word->counter--;
-        
-    }
-}
-
-// / / / / / / / / / / / / / / / / / / / / / / / / / / /
-
 void users_with_messages_create(AVL* users_with_messages, linked_list* words, int (*compare)(void*, void*)) {
+    
+    if (users_with_messages->root != NULL) {
+        AVL_destroy_with_function(users_with_messages, destroy_user_messages);
+        LL_destroy_with_function(words, destroy_word);
+    }
     
     AVL_create(users_with_messages, compare);
     LL_create(words, &compare_words_by_counter);
@@ -463,6 +509,7 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
     printf("\nEntre com a mensagem: ");
     
     string tweet_text = get_string();
+    string tweet_text_ptr_copy = tweet_text;
     
     tweet_text = strtok(tweet_text, " \t");
     
@@ -474,7 +521,8 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
         word* new_word = (word*) malloc(sizeof(word));
         if (new_word == NULL) { printf("\nHouve uma falha!\n"); return; }
         
-        new_word->text = tweet_text;
+        new_word->text = (string) malloc((strlen(tweet_text)+1)*sizeof(char));
+        strcpy(new_word->text, tweet_text);
         
         // checa se palavra ja existe
         word* found_word = (word*) LL_search_with_another_compare(words, tweet_text, &compare_words_by_text);
@@ -484,6 +532,7 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
             
             // libera nova palavra
             free(new_word);
+            free(new_word->text);
             
             // insere tweet na lista de tweets da palavra
             LL_insert(&found_word->tweets, new_tweet);
@@ -519,11 +568,12 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
         
         
         // prossegue para próxima palavra
-        tweet_text = strtok(NULL, " ");
+        tweet_text = strtok(NULL, " \t");
         i++;
     }
     
     LL_insert(&logged_user->tweets, new_tweet);
+    free(tweet_text_ptr_copy);
     
     printf("\nMensagem postada!\n");
     
@@ -565,7 +615,7 @@ void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* wor
     printf("\nEntre com o número da mensagem que deseja apagar: ");
     int message_id = get_int();
     
-    tweet* deleted_message = (tweet*) LL_delete_nth_element(&logged_user->tweets, message_id);
+    tweet* deleted_message = (tweet*) LL_delete_nth_element(&logged_user->tweets, message_id - 1);
     if (deleted_message == NULL) { printf("\nMensagem não encontrada\n"); return; }
     
     message_destroy(deleted_message);
@@ -663,7 +713,7 @@ void word_print_messages(void* a_tweet) {
 void words_find_messages(linked_list* words) {
     
     printf("\nDigite a palavra-chave a buscar: ");
-    char* keyword = get_string();
+    string keyword = get_string();
     
     word* word_found = (word*) LL_search_with_another_compare(words, keyword, &compare_words_by_text);
     
@@ -713,7 +763,6 @@ void words_show_keywords(linked_list* words) {
         printf("%d. %s, mencionada %d vezes\n", i + 1, keywords[i]->text, keywords[i]->counter);
         LL_insert_ordered(words, keywords[i]);
         
-        
     }
     
 }
@@ -737,11 +786,6 @@ int compare_users_by_counter(void* a, void* b) {
 // / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
 void users_updated_user(AVL* users_with_messages, linked_list* words) {
-    
-    typedef struct {
-        string name;
-        int counter;
-    } user_with_counter;
     
     linked_list list_of_users;
     LL_create(&list_of_users, &compare_users_by_counter);
@@ -802,8 +846,52 @@ void users_updated_user(AVL* users_with_messages, linked_list* words) {
     }
     
     user_with_counter* awesome_user = (user_with_counter*) LL_delete_nth_element(&list_of_users, 0);
-    printf("\nUsuário mais atualizado: %s\n", awesome_user->name);
+    if (awesome_user != NULL)
+        printf("\nUsuário mais atualizado: %s\n", awesome_user->name);
+    else {
+        printf("\nNão há um usuário mais atualizado\n");
+    }
     
     LL_destroy_with_function(&list_of_users, &free);
     
+    for (i = 0; i < counter; i++) {
+        LL_insert_ordered(words, keywords[i]);
+    }
+    
 }
+
+void free_everything(AVL* users, AVL* users_with_messages, linked_list* users_list, linked_list* words) {
+    
+    // retira usuários das estruturas extras
+    AVL_destroy(users_with_messages);
+    LL_destroy(users_list);
+    
+    // retira e libera memória do usuario, suas mensagens, e as listas de tweets das mensagens
+    AVL_destroy_with_function(users, &destroy_user);
+    
+    // libera a lista de palavras
+    LL_destroy_with_function(words, destroy_word);
+    
+    // FIM! Não se esqueça de sorrir sempre =)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

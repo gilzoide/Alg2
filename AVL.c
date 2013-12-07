@@ -200,7 +200,7 @@ node* AVL_delete_aux(node* root, void* info, void** deleted_element, int (*compa
     else {
         
         // salva o elemento
-        *deleted_element = root;
+        *deleted_element = root->info;
         
         // node with only one child or no child
         if( (root->left == NULL) || (root->right == NULL) ) {
@@ -389,8 +389,35 @@ int AVL_count_with_function(AVL* A, int (*counter)(void*)) {
     
 }
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+void AVL_destroy_aux(node* root, void (*destroy_elem)(void*)) {
+    
+    if(root != NULL) {
+        AVL_destroy_aux(root->left, destroy_elem);
+        AVL_destroy_aux(root->right, destroy_elem);
+        
+        if (destroy_elem != NULL)
+            (*destroy_elem)(root->info);
+        
+        free(root);
+    }
+    
+}
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+void AVL_destroy(AVL* A) {
+    
+    AVL_destroy_aux(A->root, NULL);
+    
+}
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+void AVL_destroy_with_function(AVL* A, void (*destroy_elem)(void*)) {
+    
+    AVL_destroy_aux(A->root, destroy_elem);
+    
+}
 

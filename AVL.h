@@ -173,7 +173,7 @@ void* AVL_search_with_another_compare(AVL* A, void* info, int (*compare)(void*, 
  * Conta a quantidade de elementos na AVL
  *
  * @param A
- * ponteiro para a arvore AVL
+ * ponteiro para a árvore AVL
  *
  * @return
  * o total de elementos na AVL
@@ -187,7 +187,7 @@ int AVL_count(AVL* A);
  * função de peso em cada elemento
  *
  * @param A
- * ponteiro para a arvore AVL
+ * ponteiro para a árvore AVL
  *
  * @param counter
  * função que define o peso de um elemento
@@ -197,6 +197,29 @@ int AVL_count(AVL* A);
  */
 int AVL_count_with_function(AVL* A, int (*counter)(void*));
 
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
+/*!
+ * Destroi a AVL
+ *
+ * @param A
+ * ponteiro para a árvore AVL
+ *
+ */
+void AVL_destroy(AVL* A);
+
+// / / / / / / / / / / / / / / / / / / / / / / / / / / /
+
+/*!
+ * Destroi a AVL, aplicando uma função,
+ * passada como parâmetro, em cada elemento apagado
+ *
+ * @param A
+ * ponteiro para árvore AVL
+ *
+ * @param destroy_elem
+ * função que será aplicada nos elementos
+ */
+void AVL_destroy_with_function(AVL* A, void (*destroy_elem)(void*));
 
 

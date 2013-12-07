@@ -394,4 +394,6 @@ void words_show_keywords(linked_list* words);
  */
 void users_updated_user(AVL* users_with_messages, linked_list* words);
 
+void free_everything(AVL* users, AVL* users_with_messages, linked_list* users_list, linked_list* words);
+
 #endif

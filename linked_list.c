@@ -132,7 +132,7 @@ void* LL_delete_nth_element(linked_list* L, int n) {
     for (p = &(L->head), i = 0; (*p != NULL) && i < n; p = &(*p)->next, i++);
     
     // verifica se foi encontrado
-    if (*p != NULL) {
+    if ((*p) != NULL) {
         
         // salva a informacao para o retorno
         void* deleted_info = (*p)->info;
