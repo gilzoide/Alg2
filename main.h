@@ -288,7 +288,7 @@ void users_with_messages_create(AVL* users_with_messages, linked_list* words, in
  * AVL de mensagens vinculadas aos cadastros
  * 
  * @param words
- * Lista de palavras existentes
+ * Lista de palavras já existentes no sistema
  * 
  * @param compare
  * Função de comparação de tweets
@@ -307,7 +307,7 @@ void users_post_message(AVL* users, AVL* users_with_messages, linked_list* words
  * AVL de mensagens vinculadas aos cadastros
  * 
  * @param words
- * Lista de palavras existentes
+ * Lista de palavras já existentes no sistema
  */
 void users_delete_message(AVL* users, AVL* users_with_messages, linked_list* words);
 
@@ -367,7 +367,7 @@ void users_with_messages_count_messages(AVL* users_with_messages);
  * Busca mensagens a partir de uma ou mais palavras-chave
  * 
  * @param words
- * Lista de palavras existentes
+ * Lista de palavras já existentes no sistema
  */
 void words_find_messages(linked_list* words);
 
@@ -377,7 +377,7 @@ void words_find_messages(linked_list* words);
  * Imprime as três palavras-chave mais usadas
  * 
  * @param words
- * Lista de palavras existentes
+ * Lista de palavras já existentes no sistema
  */
 void words_show_keywords(linked_list* words);
 
@@ -390,10 +390,25 @@ void words_show_keywords(linked_list* words);
  * AVL de mensagens vinculadas aos cadastros
  * 
  * @param words
- * Lista de palavras existentes
+ * Lista de palavras já existentes no sistema
  */
 void users_updated_user(AVL* users_with_messages, linked_list* words);
 
+/*!
+ * Libera toda a memória dinâmica utilizada pelas estruturas de dados AVL e lista encadeada
+ *
+ * @param users
+ * AVL de cadastros
+ *
+ * @param users_with_messages
+ * AVL de mensagens vinculadas aos cadastros
+ *
+ * @param users_list
+ * Lista de cadastros (em ordem de cadastro)
+ *
+ * @param words
+ * Lista de palavras já existentes no sistema
+ */
 void free_everything(AVL* users, AVL* users_with_messages, linked_list* users_list, linked_list* words);
 
 #endif

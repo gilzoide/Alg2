@@ -204,7 +204,6 @@ int AVL_count_with_function(AVL* A, int (*counter)(void*));
  *
  * @param A
  * ponteiro para a árvore AVL
- *
  */
 void AVL_destroy(AVL* A);
 

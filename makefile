@@ -19,7 +19,7 @@
 # Agora melhor, mais compacto e aprimorado!
 
 objs = main.o AVL.o linked_list.o
-source = main.c AVL.h AVL.c
+source = main.c main.h AVL.h AVL.c linked_list.h linked_list.c
 
 CFLAGS = -g -O2 -march=native
 
@@ -44,7 +44,7 @@ run : main.o
 		@./main
 
 zip :
-		@zip -r alg1 $(source) makefile Doxyfile Readme.dox html
+		@zip -r alg1 $(source) makefile Doxyfile Readme.dox html main
 
 clean :
-		@rm -r html main $(objs) *~ alg1.zip
+		@rm main *.o *~ alg1.zip
